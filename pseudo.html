@@ -6,7 +6,31 @@
   <title>Document</title>
 </head>
 <body>
+  <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
   <script>
+var settings = {
+  "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=Washington&term=beer",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "accept": "application/json",
+    "x-requested-with": "xmlhttprequest",
+    "Access-Control-Allow-Origin":"*",
+    "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
+
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+
+
+
+  //This is how I've been thinking about it, we probably all have similar ideas. nothing is set in stone or the best or anything, just a baseline to start from.
     //vars to store input-initially, probably just declare var zipcode;
     //event: on click, presumably from landing page. sets zipcode. use a form there. rule of thumb-this is very much the last homework it feels like.
       //a bit outside our scope, but, presumably a small on click event/or additional lines of code to move to home page.
