@@ -35,6 +35,7 @@ function getIDS(){
   for(i=0; i < response.businesses.length; i++){
     IDs.push(response.businesses[i].id)
     var button = $("<button>").html(response.businesses[i].name).attr("data-id", (response.businesses[i].id))
+    $("main").append($("<img>").attr("src", response.businesses[i].image_url))
     $("main").append(button)
     button.on("click", function(){
       var id = $(this).attr("data-id");
