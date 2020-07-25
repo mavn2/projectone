@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color:whitesmoke;
+    text-align: center;
+}
+#text{
+    color: rgb(20, 2, 2);
+    font-size: 50px;
+    text-align: center;
+    margin-top: 100px;
+    text-transform: capitalize;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+}
+.animated-gif {
+    border-radius: 25px;
+}
+.slidecontainer {
+        outline: none;
+    }
