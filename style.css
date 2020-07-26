@@ -11,14 +11,37 @@ body {
     text-align: center;
     margin-top: 100px;
     text-transform: capitalize;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-weight: 700;
 }
 .animated-gif {
     position: center;
+
     border-radius: 25px;
 }
-.slidecontainer {
-        outline: none;
-    }
 
+p{
+    font-size: 20px;
+    font-family: monospace;
+}
+.sliderContainer{
+       box-shadow: 30x;
+}
+
+.button_cont {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: rgb(230, 45, 45);
+    padding: 20px;
+    border-radius: 50px;
+    display: inline-block;
+    border: none;
+    transition: all 0.4s ease 0s;
+ }
+.button_cont:hover {
+    text-shadow: 0px 0px 6px bl;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+   transition: all 0.4s ease 0s;
+ }
