@@ -1,4 +1,4 @@
-var i=0;
+var i = 0,distance,duration;
 
 
 $(document).ready(function () {
@@ -45,7 +45,7 @@ function breweriesNearby(zipCode) {
         console.log(response);
 
         $("#results-content").empty();
-    
+
         var resultsSearch = response.results.length;
 
         for (i = 0; i < resultsSearch; i++) {
@@ -69,6 +69,11 @@ function breweriesNearby(zipCode) {
                 var breweryPlaceid = response.results[i].place_id;
 
                 DistanceCalc(breweryPlaceid, zipCode);
+           
+                var breweryDistance = $("<p>").text("distance :" + distance);
+                breweryDiv.append(breweryDistance);
+                var travelDuration = $("<p>").text("duration : " + duration);
+                breweryDiv.append(travelDuration);
 
                 $("#results-content").append(breweryDiv);
 
@@ -99,23 +104,10 @@ function DistanceCalc(breweryPlaceid, zipCode) {
 
         $.ajax(settings).done(function (distanceresponse) {
             console.log(distanceresponse);
-             
-            var distance = distanceresponse.rows[0].elements[0].distance.text;
-            console.log(distance);
-            var duration = distanceresponse.rows[0].elements[0].duration.text;
-            console.log(duration);
-    
-            var breweryDistance = $("<p>").text("distance :" + distance);
-            $("#"+"results"+[i]).append(breweryDistance);
-            var travelDuration = $("<p>").text("duration : " + duration);
-            $("#"+"results"+[i]).append(travelDuration);
-             
+                 distance = distanceresponse.rows[0].elements[0].distance.text;
+               duration = distanceresponse.rows[0].elements[0].duration.text;
         });
 
     });
-
-
-
-
 
 }
