@@ -59,6 +59,11 @@ body {
         padding-left: 50px;
         padding-top: 8px;
     }
+
+    #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
     
     @media only screen and (min-width: 768px) {
         .results {
