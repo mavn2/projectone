@@ -10,8 +10,6 @@ function typing() {
 }
 typing();
 
-
-
 var slider = document.getElementById("myRange");
 var output = document.getElementById("value");
 
