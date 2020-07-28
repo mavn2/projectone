@@ -1,8 +1,7 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
-
 });
 
 $("#submit").on("click", function (event) {
@@ -15,20 +14,18 @@ $("#submit").on("click", function (event) {
     if (zipCode === "") {
         return false;
     }
-
     breweriesNearby(zipCode);
     $("#zip-code").val("");
 });
 
-$("#homeIcon").on("click",function(){
- $("#homepage").show();
- $("#results-content").hide();
- $("#breweries-list").hide();
+$("#homeIcon").on("click", function () {
+    $("#homepage").show();
+    $("#results-content").hide();
+    $("#breweries-list").hide();
 });
 
 function breweriesNearby(zipCode) {
-
-    $("#results-content").empty();
+ 
 
     //API URL for fetching the temperature
     var settings = {
@@ -39,24 +36,34 @@ function breweriesNearby(zipCode) {
             "Authorization": "Bearer 6HRV34H2QG8huioiDfP9_Fznc-Ig3gAaHcyGdAzjFquxiOqekhtCetxAkYZXWu-lV5UuqlnR5VWE2D0j8yzqs458Su9bnnRuU0XlrFUxjVymamjNuDVOdJtImV4aX3Yx"
         },
     };
-    $.ajax(settings).done(function(response) {
-
+    $.ajax(settings).done(function (response) {
         console.log(response);
-        for (i = 0; i < response.results.length; i++) {
+          $("#results-content").empty();
+        var resultsSearch=response.results.length-10
+        
+            for (i = 0; i < resultsSearch ; i++) {
+                var breweryDiv=$("<div class='results'>");
+                breweryDiv.attr("id","results"+[i]);
 
-            var breweryName = $("<p>").text(response.results[i].name);
-            $("#results" + [i]).append(breweryName);
+                var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg")
+                breweryDiv.append(breweryImage);
 
-            var businessStatus = $("<p>").text("Business Status : " + response.results[i].business_status);
-            $("#results" + [i]).append(businessStatus);
-            console.log(response.results[i].business_status);
+                var breweryName = $("<p class='title'>").text(response.results[i].name);
+                breweryDiv.append(breweryName);
+    
+                var businessStatus = $("<p>").text("Business Status : " + response.results[i].business_status);
+                breweryDiv.append(businessStatus);
+                console.log(response.results[i].business_status);
+    
+                var breweryRating = $("<p>").text("Rating: " + response.results[i].rating);
+                breweryDiv.append(breweryRating);
+                console.log(response.results[i].rating);
+    
+                var breweryDistance = $("<p>").text("distance");
+                breweryDiv.append(breweryDistance);
 
-            var breweryRating = $("<p>").text("Rating: " + response.results[i].rating);
-            $("#results" + [i]).append(breweryRating);
-            console.log(response.results[i].rating);
-
-            var breweryDistance = $("<p>").text("distance");
-            $("#results" + [i]).append(breweryDistance);
-        }
-    });
+                $("#results-content").append(breweryDiv);
+            }
+        });
+        
 }
