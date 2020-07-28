@@ -1,5 +1,5 @@
 var i = 0, distance, duration;
-locations=[];
+locations = [];
 $(document).ready(function () {
     $("#homepage").show();
     $("#results-content").hide();
@@ -10,15 +10,11 @@ $(document).ready(function () {
 $("#submit").on("click", function (event) {
     $("#homepage").hide();
     $("#results-content").show();
-    $("#breweries-list").show();
-    console.log("hello");
     var zipCode = $("#zip-code").val();
-    console.log(zipCode);
     if (zipCode === "") {
         return false;
     }
     breweriesNearby(zipCode);
-    //DistanceCalc(zipCode);
     $("#zip-code").val("");
 });
 
@@ -27,6 +23,7 @@ $("#homeIcon").on("click", function () {
     $("#results-content").hide();
     $("#breweries-list").hide();
 });
+
 function breweriesNearby(zipCode) {
     console.log("test : " + zipCode);
     //API URL for fetching the temperature
@@ -41,12 +38,11 @@ function breweriesNearby(zipCode) {
     $.ajax(settings).done(function (response) {
         console.log(response);
         $("#results-content").empty();
-        list( response, zipCode);
+        list(response, zipCode);
     });
 }
 
-
-async function list( response, zipCode) {
+async function list(response, zipCode) {
     var len = response.results.length > 10 ? 10 : response.results.length
     console.log("len:", len);
 
@@ -66,7 +62,7 @@ async function list( response, zipCode) {
 
         var breweryPlaceid = response.results[i].place_id;
         console.log("brewery : " + breweryPlaceid);
-        
+
         var result1 = await call1(zipCode);
         console.log(result1);
 
@@ -81,23 +77,42 @@ async function list( response, zipCode) {
 
         $("#results-content").append(breweryDiv);
 
-        var lat=response.results[i].geometry.location.lat;
-        var lng=response.results[i].geometry.location.lng;
-        markers={lat,lng};
-       
-        var map=await initMap(markers);    
+        var lat = response.results[i].geometry.location.lat;
+        var lng = response.results[i].geometry.location.lng;
+        markers = {breweryName, lat, lng };
+
+        locations.push(markers);
+
     }
-} 
+    initMap(locations);
+}
 
- async function initMap(markers) {
-    $("#map").show();
-    var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 15, center: markers});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: markers, map: map});
-    $("#map").append(marker);
-  }
+function initMap(locations) {
+    console.log(locations);
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(37.0902, 95.7129),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
 
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+}
 
 async function call1(zipCode) {
     var settings = {
@@ -108,7 +123,7 @@ async function call1(zipCode) {
             "Authorization": "Bearer 6HRV34H2QG8huioiDfP9_Fznc-Ig3gAaHcyGdAzjFquxiOqekhtCetxAkYZXWu-lV5UuqlnR5VWE2D0j8yzqs458Su9bnnRuU0XlrFUxjVymamjNuDVOdJtImV4aX3Yx"
         },
     };
-    
+
     return $.ajax(settings).then(function (originresponse) {
         var placeId = originresponse.results[0].place_id;
         return placeId;
@@ -121,7 +136,7 @@ async function call2(placeId, breweryPlaceid) {
         "method": "GET",
         "timeout": 0,
     };
-  
+
     return $.ajax(settings).then(function (distanceresponse) {
         distance = distanceresponse.rows[0].elements[0].distance.text;
         duration = distanceresponse.rows[0].elements[0].duration.text;
