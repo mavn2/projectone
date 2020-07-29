@@ -25,7 +25,6 @@ $("#homeIcon").on("click", function () {
 });
 
 function breweriesNearby(zipCode) {
-    console.log("test : " + zipCode);
     //API URL for fetching the temperature
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
@@ -36,7 +35,6 @@ function breweriesNearby(zipCode) {
         },
     };
     $.ajax(settings).done(function (response) {
-        console.log(response);
         $("#results-content").empty();
         list(response, zipCode);
     });
@@ -44,7 +42,6 @@ function breweriesNearby(zipCode) {
 
 async function list(response, zipCode) {
     var len = response.results.length > 10 ? 10 : response.results.length
-    console.log("len:", len);
 
     for (i = 0; i < len; i++) {
 
@@ -54,6 +51,7 @@ async function list(response, zipCode) {
         var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
         breweryDiv.append(breweryImage);
 
+        var breweryname=response.results[i].name;
         var breweryName = $("<p class='title'>").text(response.results[i].name);
         breweryDiv.append(breweryName);
 
@@ -61,13 +59,11 @@ async function list(response, zipCode) {
         breweryDiv.append(businessStatus);
 
         var breweryPlaceid = response.results[i].place_id;
-        console.log("brewery : " + breweryPlaceid);
 
         var result1 = await call1(zipCode);
-        console.log(result1);
+
 
         var result2 = await call2(result1, breweryPlaceid);
-        console.log(result2);
 
         var breweryDistance = $("<p>").text("distance :" + result2[0]);
         breweryDiv.append(breweryDistance);
@@ -79,7 +75,7 @@ async function list(response, zipCode) {
 
         var lat = response.results[i].geometry.location.lat;
         var lng = response.results[i].geometry.location.lng;
-        markers = {breweryName, lat, lng };
+        markers = [breweryname, lat, lng ];
 
         locations.push(markers);
 
@@ -88,10 +84,10 @@ async function list(response, zipCode) {
 }
 
 function initMap(locations) {
-    console.log(locations);
+    $("#map").show();
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        center: new google.maps.LatLng(37.0902, 95.7129),
+        center: new google.maps.LatLng(37.0902, -95.7129),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -100,6 +96,8 @@ function initMap(locations) {
     var marker, i;
 
     for (i = 0; i < locations.length; i++) {
+        console.log(locations);
+        console.log(locations[i][1],locations[i][2]);
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
             map: map
