@@ -55,21 +55,25 @@ async function list(response, zipCode) {
         var breweryName = $("<p class='title'>").text(response.results[i].name);
         breweryDiv.append(breweryName);
 
-        var businessStatus = $("<p>").text("Business Status : " + response.results[i].business_status);
+        var bussinesshours=response.results[i].business_status;
+        
+        if(bussinesshours=="OPERATIONAL"){
+            var businessStatus = $("<p>").text("Business Status : Open");
+        }
+        else{
+            var businessStatus = $("<p>").text("Business Status : Closed");
+        }
+
         breweryDiv.append(businessStatus);
 
         var breweryPlaceid = response.results[i].place_id;
 
-        var result1 = await call1(zipCode);
-
+        var result1 = await call1(zipCode);//origin place id
 
         var result2 = await call2(result1, breweryPlaceid);
 
-        var breweryDistance = $("<p>").text("distance :" + result2[0]);
+        var breweryDistance = $("<p>").text("Distance :" + distance);
         breweryDiv.append(breweryDistance);
-
-        var travelDuration = $("<p>").text("duration : " + result2[1]);
-        breweryDiv.append(travelDuration);
 
         $("#results-content").append(breweryDiv);
 
@@ -78,7 +82,6 @@ async function list(response, zipCode) {
         markers = [breweryname, lat, lng ];
 
         locations.push(markers);
-
     }
     initMap(locations);
 }
@@ -112,7 +115,7 @@ function initMap(locations) {
     }
 }
 
-async function call1(zipCode) {
+ async function call1(zipCode) {
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
@@ -137,8 +140,7 @@ async function call2(placeId, breweryPlaceid) {
 
     return $.ajax(settings).then(function (distanceresponse) {
         distance = distanceresponse.rows[0].elements[0].distance.text;
-        duration = distanceresponse.rows[0].elements[0].duration.text;
-        return ([distance, duration]);
+        return (distance);
     })
 
 }
