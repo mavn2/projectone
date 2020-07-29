@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 $("#submit").on("click", function (event) {
     $("#homepage").hide();
+    $("#breweries-list").show();
     $("#results-content").show();
     var zipCode = $("#zip-code").val();
     if (zipCode === "") {
@@ -22,12 +23,15 @@ $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
+    $("#map").hide();
 });
 
 function breweriesNearby(zipCode) {
     //API URL for fetching the temperature
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" 
+                + zipCode +
+                "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -41,7 +45,7 @@ function breweriesNearby(zipCode) {
 }
 
 async function list(response, zipCode) {
-    var len = response.results.length > 10 ? 10 : response.results.length
+    var len = response.results.length > 10 ? 10 : response.results.length;
 
     for (i = 0; i < len; i++) {
 
@@ -56,7 +60,7 @@ async function list(response, zipCode) {
         breweryDiv.append(breweryName);
 
         var bussinesshours=response.results[i].business_status;
-        
+
         if(bussinesshours=="OPERATIONAL"){
             var businessStatus = $("<p>").text("Business Status : Open");
         }
@@ -68,7 +72,7 @@ async function list(response, zipCode) {
 
         var breweryPlaceid = response.results[i].place_id;
 
-        var result1 = await call1(zipCode);//origin place id
+        var result1 = await call1(zipCode); //origin place id
 
         var result2 = await call2(result1, breweryPlaceid);
 
@@ -117,7 +121,9 @@ function initMap(locations) {
 
  async function call1(zipCode) {
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query="
+               + zipCode + 
+               "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -133,7 +139,12 @@ function initMap(locations) {
 
 async function call2(placeId, breweryPlaceid) {
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" + placeId + "&destinations=place_id:" + breweryPlaceid + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" 
+               + placeId + 
+               "&destinations=place_id:" 
+               + breweryPlaceid + 
+               "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+
         "method": "GET",
         "timeout": 0,
     };
