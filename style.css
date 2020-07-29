@@ -3,6 +3,12 @@ body {
     padding: 0;
     background-color:whitesmoke;
     text-align: center;
+    background: url(https://i.ytimg.com/vi/TNEk4GfEmLs/maxresdefault.jpg) no-repeat 
+    center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 #text{
     color: rgb(20, 2, 2);
@@ -13,9 +19,90 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 700;
 }
-.animated-gif {
-    border-radius: 25px;
+.logo {
+      position: center;
+      height: 400px;
+      width: 550px;
+      border-radius: 25px;
+   
 }
-.slidecontainer {
-        outline: none;
+.container {
+    position: relative;
+    top: -40px;
+    
+}
+.text1 {
+       color: black;
+       font-size: 60px;
+       font-weight: 700;
+       letter-spacing: 3px;
+       margin-bottom: 20px;
+       position: relative;
+       animation: text 4s;
+     }
+     @keyframes text {
+        0%{
+            color: beige;
+            margin-bottom: -40px;
+         }
+         20%{
+             letter-spacing: 25px;
+             margin-bottom: -40px;
+         }
+         85%{
+             letter-spacing: 8px;
+             margin-bottom: -40px;
+         }
+
+     }
+
+    .results {
+        box-shadow: 1px 1px 5px 1px #888888;
+        width: 30rem;
+        max-width: 90%;
+        height: 0rem;
+        margin-bottom: 10px;
+        margin-left: 5%;
+        background-color: white;
+    }
+    
+    .brewerylogo {
+        height: 20vh;
+        float: left;
+        padding: 10px 10px 10px;
+        max-height: 70%;
+        max-width: 40%;
+    }
+    .title {
+        padding-top: 15px;
+    }
+    .results:hover {
+        cursor: pointer;
+        box-shadow: 5px 5px 25px 5px #532719;
+    }
+    #rHeader {
+        background-color: rgb(116, 61, 10);
+        height: 60px;
+    }
+    
+    #homeIcon {
+        height: 40px;
+        padding-left: 50px;
+        padding-top: 8px;
+    }
+
+    #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    
+    @media only screen and (min-width: 768px) {
+        .results {
+            margin-left: 19%;
+        }
+    }
+    @media only screen and (min-width: 650px) {
+        .results {
+            margin-left: 25%;
+        }
     }
