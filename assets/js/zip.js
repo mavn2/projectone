@@ -1,11 +1,28 @@
+
 var i = 0, distance, duration;
 locations = [];
+var searched;
+var searchedCheck = localStorage.getItem("searched")
+
 $(document).ready(function () {
+    if(searchedCheck === false || !searchedCheck){
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
     $("#map").hide();
+    } else {
+        $("#homepage").hide();
+        $("#results-content").show();
+        var zipCode = localStorage.getItem("last search")
+        if (zipCode === "") {
+            return false;
+        }
+        breweriesNearby(zipCode);
+        $("#zip-code").val("");
+        searched = true
+    }
 });
+
 
 $("#submit").on("click", function (event) {
     $("#homepage").hide();
@@ -16,16 +33,20 @@ $("#submit").on("click", function (event) {
     }
     breweriesNearby(zipCode);
     $("#zip-code").val("");
+    searched = true
+    localStorage.setItem("searched", searched)
+    localStorage.setItem("last search", zipCode)
 });
 
 $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
+    searched = false
+    localStorage.setItem("searched", searched)
 });
 
 function breweriesNearby(zipCode) {
-    //API URL for fetching the temperature
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
@@ -41,12 +62,18 @@ function breweriesNearby(zipCode) {
 }
 
 async function list(response, zipCode) {
+    console.log(response)
     var len = response.results.length > 10 ? 10 : response.results.length
 
     for (i = 0; i < len; i++) {
 
         var breweryDiv = $("<div class='results'>");
         breweryDiv.attr("id", "results" + [i]);
+        console.log($("#results" + [i]))
+        $("#results" + [i]).on("click", function (){
+            console.log('test')
+            getYelp();
+        });
 
         var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
         breweryDiv.append(breweryImage);
@@ -83,7 +110,7 @@ async function list(response, zipCode) {
 
         locations.push(markers);
     }
-    initMap(locations);
+    //initMap(locations);
 }
 
 function initMap(locations) {
@@ -97,7 +124,6 @@ function initMap(locations) {
     var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
-
     for (i = 0; i < locations.length; i++) {
         console.log(locations);
         console.log(locations[i][1],locations[i][2]);
@@ -143,4 +169,4 @@ async function call2(placeId, breweryPlaceid) {
         return (distance);
     })
 
-}
+};
