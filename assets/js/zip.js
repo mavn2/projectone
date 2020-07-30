@@ -1,6 +1,5 @@
-
 var i = 0, distance, duration;
-locations = [];
+var locations = [];
 var searched;
 var searchedCheck = localStorage.getItem("searched")
 
@@ -14,11 +13,7 @@ $(document).ready(function () {
         $("#homepage").hide();
         $("#results-content").show();
         var zipCode = localStorage.getItem("last search")
-        if (zipCode === "") {
-            return false;
-        }
         breweriesNearby(zipCode);
-        $("#zip-code").val("");
         searched = true
     }
 });
@@ -58,6 +53,7 @@ function breweriesNearby(zipCode) {
     $.ajax(settings).done(function (response) {
         $("#results-content").empty();
         list(response, zipCode);
+        console.log(response)
     });
 }
 
@@ -66,14 +62,10 @@ async function list(response, zipCode) {
     var len = response.results.length > 10 ? 10 : response.results.length
 
     for (i = 0; i < len; i++) {
+        var iString = i.toString();
 
         var breweryDiv = $("<div class='results'>");
         breweryDiv.attr("id", "results" + [i]);
-        console.log($("#results" + [i]))
-        $("#results" + [i]).on("click", function (){
-            console.log('test')
-            getYelp();
-        });
 
         var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
         breweryDiv.append(breweryImage);
@@ -102,6 +94,8 @@ async function list(response, zipCode) {
         var breweryDistance = $("<p>").text("Distance :" + distance);
         breweryDiv.append(breweryDistance);
 
+        dispRating(breweryname, zipCode);
+
         $("#results-content").append(breweryDiv);
 
         var lat = response.results[i].geometry.location.lat;
@@ -109,10 +103,58 @@ async function list(response, zipCode) {
         markers = [breweryname, lat, lng ];
 
         locations.push(markers);
+
+        $("#results" + iString).on("click", function (){
+            var ref = this
+            getYelp(ref, breweryname, zipCode);
+        });
     }
-    //initMap(locations);
+    initMap(locations);
 }
 
+function dispRating(breweryname,zipCode){
+    var settings = {
+      "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zipCode + "&term=" + breweryname,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "xmlhttprequest",
+        "Access-Control-Allow-Origin":"*",
+        "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
+      },
+    };
+    //gets yelp id for selected brewery
+    $.ajax(settings).done(function (response) {
+      var idNum = response.businesses[0].id
+      //displays rating for selected brewery
+      mkRating(idNum)
+    });
+  }
+  
+  function mkRating(idNum){
+    console.log(idNum)
+    var detailCall = {
+      "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/" + idNum,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "xmlhttprequest",
+        "Access-Control-Allow-Origin":"*",
+        "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
+    },
+  };
+    $.ajax(detailCall).done(function (response){
+      var r = response.rating
+      var displayRating = findStars(r)
+      console.log(r)
+      console.log(response.review_count)
+      var reviewNum = $("<p>").html(response.review_count + " Reviews")
+      $("<div class='results'>").append("<p>'test'</p>")
+    })
+  }
+  
 function initMap(locations) {
     $("#map").show();
     var map = new google.maps.Map(document.getElementById('map'), {
