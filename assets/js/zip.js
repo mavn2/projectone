@@ -1,11 +1,23 @@
 var i = 0, distance, duration;
-locations = [];
+var locations = [];
+var searched;
+var searchedCheck = localStorage.getItem("searched")
+
 $(document).ready(function () {
+    if(searchedCheck === false || !searchedCheck){
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
     $("#map").hide();
+    } else {
+        $("#homepage").hide();
+        $("#results-content").show();
+        var zipCode = localStorage.getItem("last search")
+        breweriesNearby(zipCode);
+        searched = true
+    }
 });
+
 
 $("#submit").on("click", function (event) {
     $("#homepage").hide();
@@ -16,16 +28,20 @@ $("#submit").on("click", function (event) {
     }
     breweriesNearby(zipCode);
     $("#zip-code").val("");
+    searched = true
+    localStorage.setItem("searched", searched)
+    localStorage.setItem("last search", zipCode)
 });
 
 $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
+    searched = false
+    localStorage.setItem("searched", searched)
 });
 
 function breweriesNearby(zipCode) {
-    //API URL for fetching the temperature
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
@@ -41,9 +57,11 @@ function breweriesNearby(zipCode) {
 }
 
 async function list(response, zipCode) {
+    console.log(response)
     var len = response.results.length > 10 ? 10 : response.results.length
 
     for (i = 0; i < len; i++) {
+        var iString = i.toString();
 
         var breweryDiv = $("<div class='results'>");
         breweryDiv.attr("id", "results" + [i]);
@@ -54,6 +72,8 @@ async function list(response, zipCode) {
         var breweryname=response.results[i].name;
         var breweryName = $("<p class='title'>").text(response.results[i].name);
         breweryDiv.append(breweryName);
+        breweryDiv.attr("data-name", breweryname)
+        console.log(breweryDiv.attr("data-name"))
 
         var bussinesshours=response.results[i].business_status;
         
@@ -77,6 +97,12 @@ async function list(response, zipCode) {
 
         $("#results-content").append(breweryDiv);
 
+        $("#results" + iString).on("click", function (){
+            var ref = $(this).attr("data-name")
+            console.log(ref)
+            getYelp(ref, breweryname, zipCode);
+        });
+
         var lat = response.results[i].geometry.location.lat;
         var lng = response.results[i].geometry.location.lng;
         markers = [breweryname, lat, lng ];
@@ -97,7 +123,6 @@ function initMap(locations) {
     var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
-
     for (i = 0; i < locations.length; i++) {
         console.log(locations);
         console.log(locations[i][1],locations[i][2]);
@@ -142,5 +167,4 @@ async function call2(placeId, breweryPlaceid) {
         distance = distanceresponse.rows[0].elements[0].distance.text;
         return (distance);
     })
-
-}
+};
