@@ -27,7 +27,9 @@ $("#homeIcon").on("click", function () {
 function breweriesNearby(zipCode) {
     //API URL for fetching the temperature
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+"
+                + zipCode + 
+               "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -90,7 +92,7 @@ function initMap(locations) {
     $("#map").show();
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        center: new google.maps.LatLng(37.0902, -95.7129),
+        center: new google.maps.LatLng(locations[0][1],locations[0][2]),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -117,7 +119,9 @@ function initMap(locations) {
 
  async function call1(zipCode) {
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + zipCode + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query="
+               + zipCode + 
+               "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -133,9 +137,13 @@ function initMap(locations) {
 
 async function call2(placeId, breweryPlaceid) {
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" + placeId + "&destinations=place_id:" + breweryPlaceid + "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
-        "method": "GET",
-        "timeout": 0,
+        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" 
+                + placeId + 
+               "&destinations=place_id:" 
+                + breweryPlaceid + 
+                "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+                 "method": "GET",
+                 "timeout": 0,
     };
 
     return $.ajax(settings).then(function (distanceresponse) {
