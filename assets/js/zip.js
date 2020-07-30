@@ -1,6 +1,6 @@
 
 var i = 0, distance, duration;
-locations = [];
+var locations = [];
 var searched;
 var searchedCheck = localStorage.getItem("searched")
 
@@ -14,11 +14,7 @@ $(document).ready(function () {
         $("#homepage").hide();
         $("#results-content").show();
         var zipCode = localStorage.getItem("last search")
-        if (zipCode === "") {
-            return false;
-        }
         breweriesNearby(zipCode);
-        $("#zip-code").val("");
         searched = true
     }
 });
@@ -66,14 +62,10 @@ async function list(response, zipCode) {
     var len = response.results.length > 10 ? 10 : response.results.length
 
     for (i = 0; i < len; i++) {
+        var iString = i.toString();
 
         var breweryDiv = $("<div class='results'>");
         breweryDiv.attr("id", "results" + [i]);
-        console.log($("#results" + [i]))
-        $("#results" + [i]).on("click", function (){
-            console.log('test')
-            getYelp();
-        });
 
         var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
         breweryDiv.append(breweryImage);
@@ -109,8 +101,13 @@ async function list(response, zipCode) {
         markers = [breweryname, lat, lng ];
 
         locations.push(markers);
+
+        $("#results" + iString).on("click", function (){
+            var ref = this
+            getYelp(ref, breweryname, zipCode);
+        });
     }
-    //initMap(locations);
+    initMap(locations);
 }
 
 function initMap(locations) {
