@@ -1,13 +1,13 @@
 //Onclick function for brewery buttons
-function getYelp(ref, breweryname, zipCode){
-    getID(breweryname, zipCode)
+function getYelp(ref, zipCode){
+    getID(ref, zipCode)
   
 };
 
 //Gets yelp id for selected brewery
-function getID(breweryname, zipCode){
+function getID(ref, zipCode){
     var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zipCode + "&term=" + breweryname,
+        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zipCode + "&term=" + ref,
         "method": "GET",
         "timeout": 0,
         "headers": {

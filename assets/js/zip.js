@@ -1,4 +1,3 @@
-
 var i = 0, distance, duration;
 var locations = [];
 var searched;
@@ -73,6 +72,8 @@ async function list(response, zipCode) {
         var breweryname=response.results[i].name;
         var breweryName = $("<p class='title'>").text(response.results[i].name);
         breweryDiv.append(breweryName);
+        breweryDiv.attr("data-name", breweryname)
+        console.log(breweryDiv.attr("data-name"))
 
         var bussinesshours=response.results[i].business_status;
         
@@ -96,16 +97,17 @@ async function list(response, zipCode) {
 
         $("#results-content").append(breweryDiv);
 
+        $("#results" + iString).on("click", function (){
+            var ref = $(this).attr("data-name")
+            console.log(ref)
+            getYelp(ref, breweryname, zipCode);
+        });
+
         var lat = response.results[i].geometry.location.lat;
         var lng = response.results[i].geometry.location.lng;
         markers = [breweryname, lat, lng ];
 
         locations.push(markers);
-
-        $("#results" + iString).on("click", function (){
-            var ref = this
-            getYelp(ref, breweryname, zipCode);
-        });
     }
     initMap(locations);
 }
@@ -165,5 +167,4 @@ async function call2(placeId, breweryPlaceid) {
         distance = distanceresponse.rows[0].elements[0].distance.text;
         return (distance);
     })
-
 };
