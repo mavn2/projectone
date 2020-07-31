@@ -95,6 +95,9 @@ html {
     text-align: center;
 }
 
+#ylink.p{
+    margin-top: 0px;
+}
 .box-header.detail{
     color: black;
 }

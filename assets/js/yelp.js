@@ -50,9 +50,10 @@ function getDetails(idNum){
         var r = response.rating;
         var displayRating = findStars(r);
         var reviewNum = response.review_count + " Reviews";
-        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>");
+        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>").css("margin-top","0px");
         
         //Writes content to box
+        clearFields();
         $("#name").html(name);
         $("#phonenumber").html(displayNum);
         $("#location").html(displayAddress);
@@ -70,6 +71,12 @@ function getDetails(idNum){
         $("#details").show();
   });
 }; 
+
+//Removces added elements
+function clearFields(){
+  $("#rating").children("img").remove();
+  $("#photos").children().remove();
+};
 
 function compileAddress(response){
   let final = response.location.address1;
