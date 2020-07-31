@@ -56,8 +56,9 @@ function getDetails(idNum){
         $("#name").html(name);
         $("#phonenumber").html(displayNum);
         $("#location").html(displayAddress);
-        $("#rating-stars").html(displayRating);
-        $("#rating").html(reviewNum);
+        $("#rating").append(displayRating);
+        $("#rating-text").html(reviewNum);
+        $("#rating").append(displayRating);
         $("#ylink").html(yURL);
       
         //adds photos to box
