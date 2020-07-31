@@ -1,22 +1,4 @@
-html { 
-    background: url(https://i.ytimg.com/vi/TNEk4GfEmLs/maxresdefault.jpg) no-repeat 
-      center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.container {
-        box-shadow: 1px 1px 5px 1px #888888; 
-        width: 40rem;
-        max-width: 90%;
-        height: 7rem;
-        margin-bottom: 10px;
-        margin-top: 15px;
-        margin-left: 30%;
-        background-color: white;
-}
+/* Results Box Css*/
 
 .icon {
     height: 20vh;
@@ -34,37 +16,7 @@ html {
     color: rgb(205,133,63);
 }
 
-.title {
-    padding-top: 15px;
-    padding-right: 15px;
-    float: right;
-}
-
-#homeIcon {
-    height: 40px;
-    padding-left: 50px;
-    padding-top: 8px;
-}
-
-#rHeader {
-    background-color: rgb(116, 61, 10);
-    height: 60px;
-}
-
-@media only screen and (min-width: 768px) {
-    .results {
-        margin-left: 19%;
-    }
-}
-@media only screen and (min-width: 650px) {
-    .results {
-        margin-left: 25%;
-    }
-}
-
-/*Results Box CSS*/
-
-/* Box */
+/*.box/.close classes code adapted from W3School modal guide*/
 .box {
     display: hide;
     position: fixed; 
@@ -90,17 +42,7 @@ html {
 }
 
 .box-header {
-    background-color: rgb(116, 61, 10);
-    color: black;
     text-align: center;
-}
-
-.box-header.detail{
-    color: black;
-}
-
-.container-photos {
-    overflow: auto;
 }
 
 .close {
@@ -116,6 +58,18 @@ html {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.container-photos {
+    overflow: auto;
+    min-height: 215px;
+}
+
+a {
+    float: right;
+    text-emphasis: none;
+    color: inherit;
+    font-size: 25px;
 }
 
 /*Box images*/
