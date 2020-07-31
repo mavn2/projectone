@@ -10,10 +10,13 @@ $(document).ready(function () {
         $("#results-content").hide();
         $("#breweries-list").hide();
         $("#map").hide();
+        $("#map").empty();
+        $("#details").hide();
         } else {
             //if local storage has results then show the searched city/zipcode
             $("#homepage").hide();
             $("#results-content").show();
+            $("#details").hide();
             var zipCode = localStorage.getItem("last search")
             breweriesNearby(zipCode);
             searched = true;
@@ -32,8 +35,8 @@ $(document).ready(function () {
         breweriesNearby(zipCode);
         $("#zip-code").val("");
         searched = true;
-        localStorage.setItem("searched", searched)
-        localStorage.setItem("last search", zipCode)
+        localStorage.setItem("searched", searched);
+        localStorage.setItem("last search", zipCode);
     });
 
 //on clicking the home icon it goes back to the home page
@@ -41,6 +44,8 @@ $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
+    $("#map").hide();
+    $("#map").empty();
     searched = false;
     localStorage.setItem("searched", searched);
 });
@@ -64,17 +69,14 @@ function breweriesNearby(zipCode) {
         $("#breweries-list").show();
         $("#map").show();
         $("#results-content").empty();
-
-        console.log(response,);
-
+        console.log(response)
         locations = [];
         //fetching the 10 breweries nearby
         for (i = 0; i < response.results.length; i++) {
             if (i < 10) {
-                var iString = i.toString();
                 var breweryDiv = $("<div class='results'>");
                 breweryDiv.attr("id", "results" + [i]);
-
+                
                 var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
                 breweryDiv.append(breweryImage);
                 
@@ -82,7 +84,7 @@ function breweriesNearby(zipCode) {
                 var breweryname = response.results[i].name;
                 var breweryName = $("<p class='title'>").html(response.results[i].name.bold());
                 breweryDiv.append(breweryName);
-
+                breweryDiv.attr("data-name", breweryname);
                
                 var bussinesshours = response.results[i].business_status;
              
@@ -97,17 +99,10 @@ function breweriesNearby(zipCode) {
                 }
                 breweryDiv.append(businessStatus);
 
-                 //getting the brewery rating  
-                 var mapRating=("Rating : " +response.results[i].rating);
+                //getting the brewery rating  
+                var mapRating=("Rating : " +response.results[i].rating);
                 var breweryRating=$("<p>").text("Rating : " +response.results[i].rating);
                 breweryDiv.append(breweryRating);
-
-                //when the user clicks on the results it fetches the yelp API and display more info
-                $("#results" + iString).on("click", function (){
-                    var ref = $(this).attr("data-name")
-                    console.log(ref)
-                    getYelp(ref, breweryname, zipCode);
-                });
 
                 //getting the lat and lng values to get the markers on the map
                 var brewerylat = response.results[i].geometry.location.lat;
@@ -116,14 +111,20 @@ function breweriesNearby(zipCode) {
                 locations.push(markers);
 
                 $("#results-content").append(breweryDiv);
-            }
-        }
+
+                //when the user clicks on the results it fetches the yelp API and display more info
+                $("#results" + [i]).on("click", function() {
+                    var ref = $(this).attr("data-name");
+                    getYelp(ref, zipCode);
+                });
+            };
+        };
         //function to get the get mmap displayed and the markers
         initMap(locations);
         console.log(locations);
     });
 
-}
+};
 
 function initMap(locations) {
 

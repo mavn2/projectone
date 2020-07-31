@@ -1,0 +1,80 @@
+/* Results Box Css*/
+.icon {
+    height: 20vh;
+    float: left;
+    padding: 10px 10px 10px;
+    max-height: 70%;
+    max-width: 40%;
+    vertical-align: middle;
+}
+
+.detail {
+    padding-top: 15px;
+    padding-right: 15px;
+    float: right;
+    color: rgb(205,133,63);
+}
+
+/*.box/.close classes code adapted from W3School modal guide*/
+.box {
+    display: hide;
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.container-box {
+    box-shadow: 1px 1px 5px 1px #888888; 
+    width: 40rem;
+    max-width: 70%;
+    height: 7rem;
+    margin: auto;
+    margin-left: 30%;
+    background-color: white;
+}
+
+.box-header {
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-right: 5px;
+}
+  
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.container-photos {
+    overflow: auto;
+    min-height: 215px;
+}
+
+a {
+    float: right;
+    text-emphasis: none;
+    color: inherit;
+    font-size: 25px;
+}
+
+/*Box images*/
+.card-image{
+    width: auto;
+    max-height: 200px;
+    padding: 10px;
+    display: inline-block;
+}

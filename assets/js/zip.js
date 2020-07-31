@@ -99,7 +99,6 @@ async function list(response, zipCode) {
 
         $("#results" + iString).on("click", function (){
             var ref = $(this).attr("data-name")
-            console.log(ref)
             getYelp(ref, breweryname, zipCode);
         });
 
