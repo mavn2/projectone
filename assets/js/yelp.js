@@ -50,7 +50,7 @@ function getDetails(idNum){
         var r = response.rating;
         var displayRating = findStars(r);
         var reviewNum = response.review_count + " Reviews";
-        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>").css("margin-top","0px");
+        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>").css("margin-top","0px").attr("class","detail");
         
         //Writes content to box
         clearFields();
