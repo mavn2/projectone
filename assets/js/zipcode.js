@@ -5,12 +5,14 @@ var searched;
 var searchedCheck = localStorage.getItem("searched");
 
 $(document).ready(function () {
+   //if localstorage is empty 
     if(searchedCheck === false || !searchedCheck){
         $("#homepage").show();
         $("#results-content").hide();
         $("#breweries-list").hide();
         $("#map").hide();
         } else {
+            //if local storage has results then show the searched city/zipcode
             $("#homepage").hide();
             $("#results-content").show();
             var zipCode = localStorage.getItem("last search")
@@ -20,38 +22,33 @@ $(document).ready(function () {
     });
 
     $("#submit").on("click", function (event) {
+        //on clicking the search button 
         $("#homepage").hide();
         $("#results-content").show();
         var zipCode = $("#zip-code").val();
         if (zipCode === "") {
             return false;
         }
+        //go the function breweries near by and the searched the breweries near by the zipcode user enters
         breweriesNearby(zipCode);
         $("#zip-code").val("");
-        searched = true
+        searched = true;
         localStorage.setItem("searched", searched)
         localStorage.setItem("last search", zipCode)
     });
 
-
+//on clicking the home icon it goes back to the home page
 $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
-    $("#map").hide();
-});
-
-$("#homeIcon").on("click", function () {
-    $("#homepage").show();
-    $("#results-content").hide();
-    $("#breweries-list").hide();
-    searched = false
-    localStorage.setItem("searched", searched)
+    searched = false;
+    localStorage.setItem("searched", searched);
 });
 
 function breweriesNearby(zipCode) {
 
-    //API URL for fetching the temperature
+    //API URL for fetching the breweries nearby
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewery+in+"
             + zipCode +
@@ -63,7 +60,6 @@ function breweriesNearby(zipCode) {
         },
     };
     $.ajax(settings).done(function (response) {
-        console.log(response);
         $("#homepage").hide();
         $("#results-content").show();
         $("#breweries-list").show();
@@ -73,6 +69,7 @@ function breweriesNearby(zipCode) {
         console.log(response,);
 
         locations = [];
+        //fetching the 10 breweries nearby
         for (i = 0; i < response.results.length; i++) {
             if (i < 10) {
                 var iString = i.toString();
@@ -81,15 +78,17 @@ function breweriesNearby(zipCode) {
 
                 var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
                 breweryDiv.append(breweryImage);
-
+                
+                //getting the brewery name
                 var breweryname = response.results[i].name;
                 var breweryName = $("<p class='title'>").html(response.results[i].name.bold());
                 breweryDiv.append(breweryName);
 
                
                 var bussinesshours = response.results[i].business_status;
-
+             
                 if (bussinesshours == "OPERATIONAL") {
+                    //getting bussiness status
                     var breweryStatus=("Business Status : Open");
                     var businessStatus = $("<p>").text("Business Status : Open");
                 }
@@ -99,28 +98,28 @@ function breweriesNearby(zipCode) {
                 }
                 breweryDiv.append(businessStatus);
 
+                 //getting the brewery rating  
                  var mapRating=("Rating : " +response.results[i].rating);
                 var breweryRating=$("<p>").text("Rating : " +response.results[i].rating);
                 breweryDiv.append(breweryRating);
 
-
+                //when the user clicks on the results it fetches the yelp API and display more info
                 $("#results" + iString).on("click", function (){
                     var ref = $(this).attr("data-name")
                     console.log(ref)
                     getYelp(ref, breweryname, zipCode);
                 });
 
+                //getting the lat and lng values to get the markers on the map
                 var brewerylat = response.results[i].geometry.location.lat;
-                console.log(brewerylat);
                 var brewerylng = response.results[i].geometry.location.lng;
-                console.log(brewerylng);
                 markers = [breweryname, brewerylat, brewerylng,breweryStatus,mapRating];
-                console.log(markers);
                 locations.push(markers);
 
                 $("#results-content").append(breweryDiv);
             }
         }
+        //function to get the get mmap displayed and the markers
         initMap(locations);
         console.log(locations);
     });
@@ -133,9 +132,11 @@ function initMap(locations) {
 
         $("#map").show();
         $("#map").empty();
+
         $("#map").scroll(function () {
             $("#FixedDiv").animate({ top: $(this).scrollTop() });
         });
+        //to get maop displayed onto the page
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
             center: new google.maps.LatLng(locations[0][1],locations[0][2]),
@@ -147,6 +148,7 @@ function initMap(locations) {
         var marker, i;
 
         for (i = 0; i < locations.length; i++) {
+            //to display the markers on the pgae
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                 map: map
@@ -154,6 +156,7 @@ function initMap(locations) {
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
+                    //to display the brewery search info when the user clicks the markers
                     infowindow.setContent(locations[i][0]
                         +"<br>"+locations[i][3]
                         +"<br>"+locations[i][4]);
