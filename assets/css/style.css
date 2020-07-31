@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    background-color:whitesmoke;
     text-align: center;
     background: url(https://i.ytimg.com/vi/TNEk4GfEmLs/maxresdefault.jpg) no-repeat 
     center center fixed; 
@@ -10,6 +9,68 @@ body {
     -o-background-size: cover;
     background-size: cover;
 }
+.logo {
+    margin-top: 80px;
+      position: relative;
+      width: 100%;
+     max-width: 400px;
+     height: auto;
+   
+}
+.text1 {
+       color: black;
+       font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+       font-size: 60px;
+       font-weight: 700;
+       font-size: 75px;
+       position: relative;
+       top: 60px;
+       letter-spacing: 3px;
+       margin-bottom: 20px;
+       position: relative;
+       animation: text 4s;
+     }
+     @keyframes text {
+        0%{
+            color: beige;
+            margin-bottom: -40px;
+         }
+         20%{
+             letter-spacing: 25px;
+             margin-bottom: -40px;
+         }
+         85%{
+             letter-spacing: 8px;
+             margin-bottom: -40px;
+         }
+
+     }
+     h2 {
+         margin-top: -50px;
+         font-family: cursive;
+         font-size: 30px;
+     }
+
+    .results {
+        margin-top: -50px;
+        box-shadow: 1px 1px 5px 1px #888888;
+        width: 30rem;
+        max-width: 90%;
+        height: 0rem;
+        margin-bottom: 10px;
+        margin-left: 5%;
+        background-color: white;
+        cursor: pointer;
+		margin: 15px 0;
+    }
+    #submit:hover {
+        cursor: pointer;
+    }
+
+
+
+
+
 #text{
     color: rgb(20, 2, 2);
     font-size: 50px;
@@ -67,9 +128,9 @@ body {
 
     #map {
         float: right;
-            height: 545px;
+            height: 525px;
             width: 40%;
-            margin-top: 7%;
+            margin-top: 85px;
             margin-right: 30px; 
             position: fixed;
             
@@ -95,8 +156,18 @@ body {
              width: 100%;  /* The width is the width of the web page */
              padding-right: 0px;
              margin-right: 0px;
+             margin-bottom: 15px;
+             margin-top: 10px;
+            }
 
+            }       
                     
-                }
         
-        }
+        @media screen and (max-width: 522px) {
+            #results-content, .results {
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: 0;
+                margin-right: 0;
+                max-width: 100%;
+        }}
