@@ -83,7 +83,7 @@ function breweriesNearby(zipCode) {
                 breweryDiv.append(breweryImage);
 
                 var breweryname = response.results[i].name;
-                var breweryName = $("<p class='title'>").text(response.results[i].name);
+                var breweryName = $("<p class='title'>").html(response.results[i].name.bold());
                 breweryDiv.append(breweryName);
 
                
@@ -97,7 +97,7 @@ function breweriesNearby(zipCode) {
                 }
                 breweryDiv.append(businessStatus);
 
-                var breweryRating=$("<p>").text("Rating: " +response.results[i].rating);
+                var breweryRating=$("<p>").text("Rating : " +response.results[i].rating);
                 breweryDiv.append(breweryRating);
 
 
