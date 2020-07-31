@@ -51,7 +51,7 @@ function getDetails(idNum){
     $("#name").html(name);
     $("#phonenumber").html(displayNum);
     $("#location").html(displayAddress);
-    $("#deliveryLink").html("<a href=" + response.url + " target='_blank'> Delivery and Pickup Options on Yelp!</a>")
+    $("#deliveryLink").html("<a href=" + response.url + " target='_blank'> Delivery and Pickup Options on Yelp</a>")
     //adds photos to box
     for(i = 0; i < 3; i++){
       $("#photos").append($("<img>").attr({"src": response.photos[i], "class": "card-image"}));
