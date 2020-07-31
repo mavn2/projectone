@@ -8,7 +8,7 @@ function typing() {
         setTimeout(typing,30);
     }
 }
-typing();
+//typing();
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("value");

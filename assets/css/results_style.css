@@ -1,0 +1,127 @@
+html { 
+    background: url(https://i.ytimg.com/vi/TNEk4GfEmLs/maxresdefault.jpg) no-repeat 
+      center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.container {
+        box-shadow: 1px 1px 5px 1px #888888; 
+        width: 40rem;
+        max-width: 90%;
+        height: 7rem;
+        margin-bottom: 10px;
+        margin-top: 15px;
+        margin-left: 30%;
+        background-color: white;
+}
+
+.icon {
+    height: 20vh;
+    float: left;
+    padding: 10px 10px 10px;
+    max-height: 70%;
+    max-width: 40%;
+    vertical-align: middle;
+}
+
+.detail {
+    padding-top: 15px;
+    padding-right: 15px;
+    float: right;
+    color: rgb(205,133,63);
+}
+
+.title {
+    padding-top: 15px;
+    padding-right: 15px;
+    float: right;
+}
+
+#homeIcon {
+    height: 40px;
+    padding-left: 50px;
+    padding-top: 8px;
+}
+
+#rHeader {
+    background-color: rgb(116, 61, 10);
+    height: 60px;
+}
+
+@media only screen and (min-width: 768px) {
+    .results {
+        margin-left: 19%;
+    }
+}
+@media only screen and (min-width: 650px) {
+    .results {
+        margin-left: 25%;
+    }
+}
+
+/*Results Box CSS*/
+
+/* Box */
+.box {
+    display: hide;
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.container-box {
+    box-shadow: 1px 1px 5px 1px #888888; 
+    width: 40rem;
+    max-width: 70%;
+    height: 7rem;
+    margin: auto;
+    margin-left: 30%;
+    background-color: white;
+}
+
+.box-header {
+    background-color: rgb(116, 61, 10);
+    color: black;
+    text-align: center;
+}
+
+.box-header.detail{
+    color: black;
+}
+
+.container-photos {
+    overflow: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-right: 5px;
+}
+  
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*Box images*/
+.card-image{
+    width: auto;
+    max-height: 200px;
+    padding: 10px;
+    display: inline-block;
+}
