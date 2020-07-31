@@ -1,4 +1,3 @@
-
 var i = 0, distance, duration;
 var locations = [];
 var searched;
@@ -90,13 +89,16 @@ function breweriesNearby(zipCode) {
                 var bussinesshours = response.results[i].business_status;
 
                 if (bussinesshours == "OPERATIONAL") {
+                    var breweryStatus=("Business Status : Open");
                     var businessStatus = $("<p>").text("Business Status : Open");
                 }
                 else {
+                    var breweryStatus=("Business Status : Closed");
                     var businessStatus = $("<p>").text("Business Status : Closed");
                 }
                 breweryDiv.append(businessStatus);
 
+                 var mapRating=("Rating : " +response.results[i].rating);
                 var breweryRating=$("<p>").text("Rating : " +response.results[i].rating);
                 breweryDiv.append(breweryRating);
 
@@ -111,7 +113,8 @@ function breweriesNearby(zipCode) {
                 console.log(brewerylat);
                 var brewerylng = response.results[i].geometry.location.lng;
                 console.log(brewerylng);
-                markers = [breweryname, brewerylat, brewerylng];
+                markers = [breweryname, brewerylat, brewerylng,breweryStatus,mapRating];
+                console.log(markers);
                 locations.push(markers);
 
                 $("#results-content").append(breweryDiv);
@@ -150,7 +153,9 @@ function initMap(locations) {
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(locations[i][0]);
+                    infowindow.setContent(locations[i][0]
+                        +"<br>"+locations[i][3]
+                        +"<br>"+locations[i][4]);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
