@@ -22,6 +22,7 @@ $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
+    $("#map").hide();
 });
 
 function breweriesNearby(zipCode) {
@@ -37,10 +38,13 @@ function breweriesNearby(zipCode) {
             "Authorization": "Bearer 6HRV34H2QG8huioiDfP9_Fznc-Ig3gAaHcyGdAzjFquxiOqekhtCetxAkYZXWu-lV5UuqlnR5VWE2D0j8yzqs458Su9bnnRuU0XlrFUxjVymamjNuDVOdJtImV4aX3Yx"
         },
     };
+
     $.ajax(settings).done(function (response) {
         $("#homepage").hide();
         $("#results-content").show();
+        $("#breweries-list").show();
         $("#results-content").empty();
+
         list(response, zipCode);
     }).fail(() => {
         // if its a invalid city name
@@ -81,30 +85,33 @@ async function list(response, zipCode) {
 
         var breweryPlaceid = response.results[i].place_id;
 
-        var result1 = await call1(zipCode);//origin place id
+      
 
-        var result2 = await call2(result1, breweryPlaceid);
+        var brewerylat = response.results[i].geometry.location.lat;
+        var brewerylng = response.results[i].geometry.location.lng;
+        markers = [breweryname, brewerylat, brewerylng];
+        locations.push(markers);
 
-        var breweryDistance = $("<p>").text("Distance :" + distance);
-        breweryDiv.append(breweryDistance);
+        var result1 = await currentLocation(brewerylat,brewerylng);
+        console.log(result1);
+
+         var breweryDistance = $("<p>").text("Distance :" + distance);
+         breweryDiv.append(breweryDistance);
 
         $("#results-content").append(breweryDiv);
-
-        var lat = response.results[i].geometry.location.lat;
-        var lng = response.results[i].geometry.location.lng;
-        markers = [breweryname, lat, lng];
-
-        locations.push(markers);
+    
     }
     initMap(locations);
 }
 
 function initMap(locations) {
     $("#map").show();
-    console.log(locations);
+    $("#map").scroll(function() { 
+        $("#FixedDiv").animate({top:$(this).scrollTop()});
+    });
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
-            center: new google.maps.LatLng(locations[0][1], locations[0][2]),
+            center: new google.maps.LatLng(locations[0][1],locations[0][2]),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
@@ -112,9 +119,7 @@ function initMap(locations) {
 
         var marker, i;
 
-        for (i = 0; i < locations.length; i++) {
-            console.log(locations);
-            console.log(locations[i][1], locations[i][2]);
+        for (i = 0; i < locations.length; i++) { 
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                 map: map
@@ -129,30 +134,39 @@ function initMap(locations) {
         }
     }
 
-async function call1(zipCode) {
-    var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query="
-            + zipCode +
-            "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
-        "method": "GET",
-        "timeout": 0,
-        "headers": {
-            "Authorization": "Bearer 6HRV34H2QG8huioiDfP9_Fznc-Ig3gAaHcyGdAzjFquxiOqekhtCetxAkYZXWu-lV5UuqlnR5VWE2D0j8yzqs458Su9bnnRuU0XlrFUxjVymamjNuDVOdJtImV4aX3Yx"
-        },
-    };
+    async function currentLocation(brewerylat,brewerlng) {
+        navigator.geolocation.getCurrentPosition(function(position){
+            console.log(position);
+            var userLat=position.coords.latitude;
+            var userLng=position.coords.longitude;
+            console.log(userLat);
+            console.log(userLng);
 
-    return $.ajax(settings).then(function (originresponse) {
-        var placeId = originresponse.results[0].place_id;
-        return placeId;
-    });
-}
+            var settings = {
+                "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="
+                    +userLat+","+userLng+
+                    "&destinations="
+                    + brewerylat+","+brewerlng+
+                    "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
+                "method": "GET",
+                "timeout": 0,
+            };
+        
+            return $.ajax(settings).then(function (distanceresponse) {
+                console.log(distanceresponse);
+                distance = distanceresponse.rows[0].elements[0].distance.text;
+                console.log(distance);
+                return (distance);
+            })
+        });
+    }
 
-async function call2(placeId, breweryPlaceid) {
+  /*async function call2(result1, breweryPlaceid) {
     var settings = {
         "url": "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:"
-            + placeId +
-            "&destinations=place_id:"
-            + breweryPlaceid +
+            + result1 +
+            "&destinations="
+            + breweryPlaceid+
             "&key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw",
         "method": "GET",
         "timeout": 0,
@@ -163,4 +177,4 @@ async function call2(placeId, breweryPlaceid) {
         return (distance);
     })
 
-}
+}*/
