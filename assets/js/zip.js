@@ -1,29 +1,53 @@
 var i = 0, distance = "no distance please", duration;
 var locations = [];
-$(document).ready(function () {
-    $("#homepage").show();
-    $("#results-content").hide();
-    $("#breweries-list").hide();
-    $("#map").hide();
-});
+var searched;
+var searchedCheck = localStorage.getItem("searched");
 
-$("#submit").on("click", async function (event) {
-    var zipCode = $("#zip-code").val();//
-    if (zipCode === '') {
-        console.log("zipcode : " + zipCode);
-        return false;
-    }
-    currentLocation(zipCode);
-    $("#zip-code").val("");
-});
+$(document).ready(function () {
+    if(searchedCheck === false || !searchedCheck){
+        $("#homepage").show();
+        $("#results-content").hide();
+        $("#breweries-list").hide();
+        $("#map").hide();
+        } else {
+            $("#homepage").hide();
+            $("#results-content").show();
+            var zipCode = localStorage.getItem("last search")
+            breweriesNearby(zipCode);
+            searched = true
+        }
+    });
+
+    $("#submit").on("click", function (event) {
+        $("#homepage").hide();
+        $("#results-content").show();
+        var zipCode = $("#zip-code").val();
+        if (zipCode === "") {
+            return false;
+        }
+        currentLocation(zipCode);
+        $("#zip-code").val("");
+        searched = true
+        localStorage.setItem("searched", searched)
+        localStorage.setItem("last search", zipCode)
+    });
+
 
 $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
     $("#breweries-list").hide();
     $("#map").hide();
-    
 });
+
+$("#homeIcon").on("click", function () {
+    $("#homepage").show();
+    $("#results-content").hide();
+    $("#breweries-list").hide();
+    searched = false
+    localStorage.setItem("searched", searched)
+});
+
 
 function breweriesNearby(zipCode, userLat, userLng) {
 
@@ -51,7 +75,7 @@ async function list(response, zipCode, userLat, userLng) {
     var len = response.results.length > 10 ? 10 : response.results.length
     locations = [];
     for (i = 0; i < len; i++) {
-
+        var iString = i.toString();
         var breweryDiv = $("<div class='results'>");
         breweryDiv.attr("id", "results" + [i]);
 
@@ -79,6 +103,12 @@ async function list(response, zipCode, userLat, userLng) {
             var brewerylng = response.results[i].geometry.location.lng;
             var distance = await distanceCalc(userLat, userLng, brewerylat, brewerylng);
         }
+        
+        $("#results" + iString).on("click", function (){
+            var ref = $(this).attr("data-name")
+            console.log(ref)
+            getYelp(ref, breweryname, zipCode);
+        });
 
         var brewerylat = response.results[i].geometry.location.lat;
         var brewerylng = response.results[i].geometry.location.lng;

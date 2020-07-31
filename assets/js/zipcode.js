@@ -1,21 +1,37 @@
 
 var i = 0, distance, duration;
 var locations = [];
+var searched;
+var searchedCheck = localStorage.getItem("searched");
+
 $(document).ready(function () {
-    $("#homepage").show();
-    $("#results-content").hide();
-    $("#breweries-list").hide();
-    $("#map").hide();
-});
-$("#submit").on("click", async function (event) {
-    var zipCode = $("#zip-code").val();
-    if (zipCode === '') {
-        console.log("zipcode : " + zipCode);
-        return false;
-    }
-    breweriesNearby(zipCode);
-    $("#zip-code").val("");
-});
+    if(searchedCheck === false || !searchedCheck){
+        $("#homepage").show();
+        $("#results-content").hide();
+        $("#breweries-list").hide();
+        $("#map").hide();
+        } else {
+            $("#homepage").hide();
+            $("#results-content").show();
+            var zipCode = localStorage.getItem("last search")
+            breweriesNearby(zipCode);
+            searched = true;
+        }
+    });
+
+    $("#submit").on("click", function (event) {
+        $("#homepage").hide();
+        $("#results-content").show();
+        var zipCode = $("#zip-code").val();
+        if (zipCode === "") {
+            return false;
+        }
+        breweriesNearby(zipCode);
+        $("#zip-code").val("");
+        searched = true
+        localStorage.setItem("searched", searched)
+        localStorage.setItem("last search", zipCode)
+    });
 
 
 $("#homeIcon").on("click", function () {
@@ -24,6 +40,15 @@ $("#homeIcon").on("click", function () {
     $("#breweries-list").hide();
     $("#map").hide();
 });
+
+$("#homeIcon").on("click", function () {
+    $("#homepage").show();
+    $("#results-content").hide();
+    $("#breweries-list").hide();
+    searched = false
+    localStorage.setItem("searched", searched)
+});
+
 function breweriesNearby(zipCode) {
 
     //API URL for fetching the temperature
@@ -50,7 +75,7 @@ function breweriesNearby(zipCode) {
         locations = [];
         for (i = 0; i < response.results.length; i++) {
             if (i < 10) {
-
+                var iString = i.toString();
                 var breweryDiv = $("<div class='results'>");
                 breweryDiv.attr("id", "results" + [i]);
 
@@ -61,6 +86,7 @@ function breweriesNearby(zipCode) {
                 var breweryName = $("<p class='title'>").text(response.results[i].name);
                 breweryDiv.append(breweryName);
 
+               
                 var bussinesshours = response.results[i].business_status;
 
                 if (bussinesshours == "OPERATIONAL") {
@@ -70,6 +96,16 @@ function breweriesNearby(zipCode) {
                     var businessStatus = $("<p>").text("Business Status : Closed");
                 }
                 breweryDiv.append(businessStatus);
+
+                var breweryRating=$("<p>").text("Rating: " +response.results[i].rating);
+                breweryDiv.append(breweryRating);
+
+
+                $("#results" + iString).on("click", function (){
+                    var ref = $(this).attr("data-name")
+                    console.log(ref)
+                    getYelp(ref, breweryname, zipCode);
+                });
 
                 var brewerylat = response.results[i].geometry.location.lat;
                 console.log(brewerylat);
