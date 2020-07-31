@@ -34,7 +34,9 @@ body {
         margin-left: 5%;
         background-color: white;
     }
-    
+ #results-content {
+     margin-top: 65px;
+ }
     .brewerylogo {
         height: 20vh;
         float: left;
@@ -49,29 +51,52 @@ body {
         cursor: pointer;
         box-shadow: 5px 5px 25px 5px #532719;
     }
-    #rHeader {
-        background-color: rgb(116, 61, 10);
+    #header {
+        background-color: white;
         height: 60px;
+        width: 100%;
+        position: fixed;
+        box-shadow: 5px 5px 25px 5px #532719;
+        margin-top: 0;
     }
     
     #homeIcon {
         height: 40px;
-        padding-left: 50px;
         padding-top: 8px;
     }
 
     #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    
-    @media only screen and (min-width: 768px) {
-        .results {
-            margin-left: 19%;
+        float: right;
+            height: 545px;
+            width: 40%;
+            margin-top: 7%;
+            margin-right: 30px; 
+            position: fixed;
+            
         }
-    }
-    @media only screen and (min-width: 650px) {
-        .results {
-            margin-left: 25%;
+
+        #results-content, #results {
+            float: left;
+            margin-right: 10px;
+            margin-left: 90px ;
+            padding-left: 0px;
+        
         }
-    }
+
+        @media screen and (max-width: 1035px) {
+            #results-content, #results {
+                margin-left: 10px;
+            }
+        }
+   
+        @media screen and (max-width: 900px) {
+            #map {
+             height: 400px;  /* The height is 400 pixels */
+             width: 100%;  /* The width is the width of the web page */
+             padding-right: 0px;
+             margin-right: 0px;
+
+                    
+                }
+        
+        }
