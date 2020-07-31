@@ -11,6 +11,7 @@
         integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
     <title>Breweries</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/results_style.css">
 </head>
 
 <body>
@@ -35,7 +36,6 @@
         </div>
     </div>
 
-
     <div class="list of Breweries" id="breweries-list">
         <div class="pure-menu pure-menu-horizontal" id="rHeader">
             <div class="navbar" id=navbar>
@@ -46,26 +46,36 @@
             </div>
         </div>
     </div>
+
+    <div class ="box" id ="details">
+        <div class = "container-box box-header" id = "breweryLogo">
+            <span class="close">&times</span>
+            <img class = "icon" id = "breweryicon" src="assets/images/detailPage/breweryicon.png">
+            <h1 class = "detail" id = "name">*Brewery Name*</h1>
+        </div>
+        <div class = "box-body">
+            <div class = "container-box container-photos" id = "photos">
+            </div>
+            <div class = "container-box" id = "address">
+                <img class = "icon" id = "addressicon" src="assets/images/detailPage/addressicon.png">
+                <h1 class = "detail" id = "location"> *Brewery's address* </h1>
+            </div>
+            <div class = "container-box" id = "phone">
+                <img class = "icon" id = "phoneicon" src="assets/images/detailPage/phoneicon.png">
+                <h1 class = "detail" id = "phonenumber">xxx-xxx-xxxx</h1>
+            </div>
+            <div class = "container-box" id = rating>
+                <div id = "rating-stars"></div>
+                <h1 class = "detail" id = "rating">Deliver to you/ No delivery</h1>
+            </div> 
+            <div class = "container-box" id = "ylink">
+            </div>
+        </div>
+    </div>
+
     <div class="results-content" id="results-content">
         <!--appends all the results here-->
     </div>
-
-    <div class = "container" id = "breweryLogo">
-        <img class = "icon" id = "breweryicon" src="breweryicon.png">
-        <h1 class = "detail" id = "name">*Brewery Name*</h1>
-    </div>
-    <div class = "container" id = "address">
-        <img class = "icon" id = "addressicon" src="addressicon.png">
-        <h1 class = "detail" id = "location"> *Brewery's address* </h1>
-    </div>
-    <div class = "container" id = "phone">
-        <img class = "icon" id = "phoneicon" src="phoneicon.png">
-        <h1 class = "detail" id = "phonenumber">xxx-xxx-xxxx</h1>
-    </div>
-    <div class = "container" id = delivery>
-        <img class = "icon" id = "iconThree" src="delivericon.png">
-        <h1 class = "detail" id = "delivery">Deliver to you/ No delivery</h1>
-    </div> 
     
     <div id="map">
         <h3>google maps</h3>
@@ -82,9 +92,9 @@
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
 
-
-    <script src="./assets/js/script.js"></script>
     <script src="./assets/js/zip.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/yelp.js"></script>
     <script defer   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw&callback=initMap">
     </script>
 
