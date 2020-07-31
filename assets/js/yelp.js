@@ -42,23 +42,23 @@ function getDetails(idNum){
   $.ajax(detailCall).done(function (response){
     console.log(response)
         //vars for content from json
-        var name = response.name
-        var number = response.display_phone
-        var displayNum = checkPhone(number)
-        var address = compileAddress(response)
-        var displayAddress = address
-        var r = response.rating
-        var displayRating = findStars(r)
-        var reviewNum = response.review_count + " Reviews"
-        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>")
+        var name = response.name;
+        var number = response.display_phone;
+        var displayNum = checkPhone(number);
+        var address = compileAddress(response);
+        var displayAddress = address;
+        var r = response.rating;
+        var displayRating = findStars(r);
+        var reviewNum = response.review_count + " Reviews";
+        var yURL = $("<p>").html("<a href=" + response.url + "target='_blank'> More details on Yelp!</a>");
         
         //Writes content to box
-        $("#name").html(name)
-        $("#phonenumber").html(displayNum)
-        $("#location").html(displayAddress)
-        $("#rating-stars").html(displayRating)
-        $("#rating").html(reviewNum)
-        $("#ylink").html(yURL)
+        $("#name").html(name);
+        $("#phonenumber").html(displayNum);
+        $("#location").html(displayAddress);
+        $("#rating-stars").html(displayRating);
+        $("#rating").html(reviewNum);
+        $("#ylink").html(yURL);
       
         //adds photos to box
         for(i = 0; i < 3; i++){
@@ -66,7 +66,7 @@ function getDetails(idNum){
         };
 
         //displays box
-        $("#details").show()
+        $("#details").show();
   });
 }; 
 
