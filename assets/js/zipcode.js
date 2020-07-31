@@ -91,8 +91,6 @@ function initMap(locations) {
 
     console.log(locations);
 
-    if (locations) {
-
         $("#map").show();
         $("#map").empty();
         $("#map").scroll(function () {
@@ -100,7 +98,7 @@ function initMap(locations) {
         });
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
-            center: new google.maps.LatLng(locations[0][1], locations[0][2]),
+            center: new google.maps.LatLng(locations[0][1],locations[0][2]),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
@@ -122,10 +120,4 @@ function initMap(locations) {
             })(marker, i));
         }
     }
-    else {
-        $("#homepage").hide();
-        $("#results-content").show();
-        $("#breweries-list").show();
-        $("#map").show();
-    }
-}
+   

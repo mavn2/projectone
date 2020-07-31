@@ -1,4 +1,4 @@
-var i = 0, distance, duration;
+var i = 0, distance = "no distance please", duration;
 var locations = [];
 $(document).ready(function () {
     $("#homepage").show();
@@ -22,6 +22,7 @@ $("#homeIcon").on("click", function () {
     $("#results-content").hide();
     $("#breweries-list").hide();
     $("#map").hide();
+    
 });
 
 function breweriesNearby(zipCode, userLat, userLng) {
@@ -39,62 +40,64 @@ function breweriesNearby(zipCode, userLat, userLng) {
     };
 
     $.ajax(settings).done(function (response) {
-
+        $("#results-content").empty();
+        $("#results-content").show();
         list(response, zipCode, userLat, userLng);
     });
 
 }
 
 async function list(response, zipCode, userLat, userLng) {
-
-
+    var len = response.results.length > 10 ? 10 : response.results.length
+    locations = [];
     for (i = 0; i < len; i++) {
 
-        if (i < 10) {
+        var breweryDiv = $("<div class='results'>");
+        breweryDiv.attr("id", "results" + [i]);
 
-            var breweryDiv = $("<div class='results'>");
-            breweryDiv.attr("id", "results" + [i]);
+        var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
+        breweryDiv.append(breweryImage);
 
-            var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
-            breweryDiv.append(breweryImage);
+        var breweryname = response.results[i].name;
+        var breweryName = $("<p class='title'>").text(response.results[i].name);
+        breweryDiv.append(breweryName);
 
-            var breweryname = response.results[i].name;
-            var breweryName = $("<p class='title'>").text(response.results[i].name);
-            breweryDiv.append(breweryName);
+        var bussinesshours = response.results[i].business_status;
 
-            var bussinesshours = response.results[i].business_status;
-
-            if (bussinesshours == "OPERATIONAL") {
-                var businessStatus = $("<p>").text("Business Status : Open");
-            }
-            else {
-                var businessStatus = $("<p>").text("Business Status : Closed");
-            }
-            breweryDiv.append(businessStatus);
-
+        if (bussinesshours == "OPERATIONAL") {
+            var businessStatus = $("<p>").text("Business Status : Open");
+        }
+        else {
+            var businessStatus = $("<p>").text("Business Status : Closed");
+        }
+        breweryDiv.append(businessStatus);
+        if (userLat === "" || userLng === "") {
+            var distance = "You denied me :-(";
+        }
+        else {
             var brewerylat = response.results[i].geometry.location.lat;
             var brewerylng = response.results[i].geometry.location.lng;
-            markers = [breweryname, brewerylat, brewerylng];
-            locations.push(markers);
-            console.log(markers);
-
             var distance = await distanceCalc(userLat, userLng, brewerylat, brewerylng);
-
-            var breweryDistance = $("<p>").text("Distance :" + distance);
-            breweryDiv.append(breweryDistance);
-
-            $("#results-content").append(breweryDiv);
         }
+
+        var brewerylat = response.results[i].geometry.location.lat;
+        var brewerylng = response.results[i].geometry.location.lng;
+        markers = [breweryname, brewerylat, brewerylng];
+        locations.push(markers);
+
+        var breweryDistance = $("<p>").text("Distance :" + distance);
+        breweryDiv.append(breweryDistance);
+
+        $("#results-content").append(breweryDiv);
 
     }
     initMap(locations);
+    console.log(locations);
 }
 
 async function currentLocation(zipCode) {
     $("#homepage").hide();
-    $("#results-content").show();
     $("#breweries-list").show();
-    $("#results-content").empty();
 
     navigator.geolocation.watchPosition(function (position) {
         console.log("i'm tracking you!");
@@ -110,6 +113,10 @@ async function currentLocation(zipCode) {
         function (error) {
             if (error.code == error.PERMISSION_DENIED)
                 console.log("you denied me :-(");
+            var userLat = "";
+            var userLng = "";
+            console.log(userLat,userLng)
+            breweriesNearby(zipCode, userLat, userLng);
         });
 }
 
