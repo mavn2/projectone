@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha184-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH1+nqUivzIebhndOJK18anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <title>Breweries</title>
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+</head>
+
+<body>
+    <div id="homepage">
+        <div id="text">
+
+        </div>
+
+        <br>
+        <br>
+
+        <img class="animated-gif" src="https://media.giphy.com/media/xTiTny1nYrk4cQUQ4U/giphy.gif">
+        <br>
+        <br>
+        <div class="slideContainer">
+            <h3>Enter your zip code:</h3>
+            <input type="search" id="zip-code" placeholder="Search">
+            <button type="submit" id="submit"><i class="fa fa-search"></i></button></a>
+            <input type="range" min="1" max="15" value="1" id="myRange">
+            <p>Radius: <span id="value"></span></p>
+
+        </div>
+    </div>
+
+
+    <div class="list of Breweries" id="breweries-list">
+        <div class="pure-menu pure-menu-horizontal" id="rHeader">
+            <div class="navbar" id=navbar>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                        <button> <img id="homeIcon" src="./assets/images/homeIcon.png"> </button>
+                    </li>
+            </div>
+        </div>
+    </div>
+    <div class="results-content" id="results-content">
+        <!--appends all the results here-->
+    </div>
+    <div id="map">
+        <h3>google maps</h3>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+
+
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/yelp.js"></script>
+    <script src="./assets/js/zip.js"></script>
+    <script defer   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw&callback=initMap">
+    </script>
+
+</body>
+
+</html>
