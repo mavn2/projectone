@@ -28,7 +28,7 @@ $("#submit").on("click", function (event) {
     var zipCode = $("#zip-code").val();
     if (zipCode === "") {
         return false;
-    }
+    };
     //go the function breweries near by and the searched the breweries near by the zipcode user enters
     breweriesNearby(zipCode);
     $("#zip-code").val("");
@@ -60,8 +60,7 @@ function breweriesNearby(zipCode) {
         },
     };
     $.ajax(settings).done(function (response) {
-        $("#result-content").empty();
-        console.log(response)
+        $("#results-content").empty();
         locations = [];
         //fetching the 10 breweries nearby
         for (i = 0; i < response.results.length; i++) {
@@ -101,17 +100,16 @@ function breweriesNearby(zipCode) {
                     var ref = $(this).attr("data-name");
                     getYelp(ref, zipCode);
                 });
-            }
-        }
-        //validating the cityname
-        citynamevalidate(locations, zipCode);
+            };
+        };
+        //Checks if search is valid
+        cityNameValidate(locations, zipCode);
     });
-
 };
 
+//Determines/displayhs business hours
 function bussinesshoursCalc(bussinesshours){
     if (bussinesshours == "OPERATIONAL") {
-        //getting bussiness status
         var breweryStatus = ("Business Status : Open");
         var businessStatus = $("<p>").text("Business Status : Open");
         return [breweryStatus,businessStatus];
@@ -120,8 +118,8 @@ function bussinesshoursCalc(bussinesshours){
         var breweryStatus = ("Business Status : Closed");
         var businessStatus = $("<p>").text("Business Status : Closed");
         return [breweryStatus,businessStatus];
-    }
-}
+    };
+};
 
 function locationsvalidate(locations,markers) {
     if (locations) {
@@ -131,37 +129,33 @@ function locationsvalidate(locations,markers) {
     else {
         locations = [breweryname, brewerylat, brewerylng, breweryStatus, mapRating];
         return locations;
-    }
-}
+    };
+};
 
-function citynamevalidate(locations, zipCode) {
-    //if the cityname is invalid it stays in the homepage
+function cityNameValidate(locations, zipCode) {
+    //Prevents invalid search from loading
     if (locations.length === "" || locations.length == 0) {
         $("#homepage").show();
         $("#results-content").hide();
         $("#breweries-list").hide();
         $("#map").hide();
-        console.log(locations);
-        console.log("not equal to locations");
-        var error = $("#error").html("invalid city name".bold());
+        $("#error").html("Invalid City or Zipcode".bold());
+        $("#error").show()
         return false;
     }
     else {
-        //if the cityname/zipcode is valid then show the results
+        //Allows valid search to run
         $("#error").hide();
-        console.log(locations);
-        console.log("hello");
         $("#homepage").hide();
         $("#results-content").show();
         $("#breweries-list").show();
         searched = true;
-        //storing the search results in the local storage if the city exists
+        //Updates local storage
         localStorage.setItem("searched", searched);
         localStorage.setItem("last search", zipCode);
         initMap(locations);
-    }
-
-}
+    };
+};
 
 //function  to show the searches in the map
 function initMap(locations) {
@@ -196,6 +190,6 @@ function initMap(locations) {
                 infowindow.open(map, marker);
             }
         })(marker, i));
-    }
-}
+    };
+};
 

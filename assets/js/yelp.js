@@ -1,43 +1,44 @@
 //Onclick function for brewery buttons
 function getYelp(ref, zipCode){
-    getID(ref, zipCode)
+  getID(ref, zipCode);
   
 };
 
-//Gets yelp id for selected brewery
+//Gets Yelp id for selected brewery
 function getID(ref, zipCode){
-    var settings = {
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zipCode + "&term=" + ref,
-        "method": "GET",
-        "timeout": 0,
-        "headers": {
-          "accept": "application/json",
-            "x-requested-with": "xmlhttprequest",
-            "Access-Control-Allow-Origin":"*",
-            "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
-        },
-    };
-    //gets yelp id for selected brewery
-    $.ajax(settings).done(function (response) {
-      console.log(response)
-      var idNum = response.businesses[0].id
-      //gets more details from yelp
-      getDetails(idNum)
-    });
+  var settings = {
+    "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zipCode + "&term=" + ref,
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "accept": "application/json",
+      "x-requested-with": "xmlhttprequest",
+      "Access-Control-Allow-Origin":"*",
+      "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
+    },
+  };
+  //gets yelp id for selected brewery
+  $.ajax(settings).done(function (response) {
+    var idNum = response.businesses[0].id
+    //gets details for that ID
+    getDetails(idNum);
+  });
 };
 
+//Gets details for sekected brewery
 function getDetails(idNum){
-    var detailCall = {
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/" + idNum,
-        "method": "GET",
-        "timeout": 0,
-        "headers": {
-            "accept": "application/json",
-            "x-requested-with": "xmlhttprequest",
-            "Access-Control-Allow-Origin":"*",
-            "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
-        },
-    };
+  var detailCall = {
+    "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/" + idNum,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "xmlhttprequest",
+        "Access-Control-Allow-Origin":"*",
+        "Authorization": "Bearer wR0mMmgKO12tZ1oKt9JNRgb2d5cHlLPlnXr59v3aDhjD1cgGqEANWCgiYyXM8dSLhR771J9jYp4t3_rosKf0iesG87MTE_wwGDvgDxyrxji9Qt4RDP-JQTbZyFUTX3Yx"
+      },
+  };
+  //Accesses, prepares, and displays results
   $.ajax(detailCall).done(function (response){
     //vars for content from json
     var name = response.name;
@@ -62,9 +63,8 @@ function getDetails(idNum){
   });
 }; 
 
-//Removces added elements from box
+//Prevents duplicate photos stacking up in box
 function clearFields(){
-  $("#rating").children("img").remove();
   $("#photos").children().remove();
 };
 
@@ -80,7 +80,7 @@ function compileAddress(response){
   return final;
 };
 
-//Sets placeholder message if phone number was not listed on yelp
+//Sets placeholder message if phone number is not listed on Yelp
 function checkPhone (number){
   var result;
   if (number === ""){
@@ -91,7 +91,7 @@ function checkPhone (number){
   return result;
 };
 
-//Function to close, adapted from W3Schools modal
+//Function to close window, adapted from W3Schools' modal
 $("span").on("click", function() {
   $("#details").hide();
 });

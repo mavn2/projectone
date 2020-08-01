@@ -25,18 +25,16 @@
         </div>
 
         <div style="position: relative; left: 0; top: 0;">
-            <img src="assets/images/logo (2).png" class="logo"/>
+            <img src="assets/images/logo_(2).png" class="logo" alt="Stylized hand holding beer."/>
         </div>
 
         <br>
         <br>
 
         <div class="slideContainer">
-            <h1>
-                <h2>
-                    Find a brewery:
-                </h2>
-            </h1>
+            <h2>
+                Find a brewery:
+            </h2>
             <input type="search" id="zip-code" placeholder="Enter your City/Zipcode">
             <button type="submit" id="submit"><i class="fa fa-search"></i></button></a>
             <p id="error"></p>
@@ -46,30 +44,30 @@
 
     <div class="list of Breweries" id="breweries-list">
         <div id="header">
-            <button> <img id="homeIcon" src="./assets/images/homeIcon.png"> </button>
+            <button> <img id="homeIcon" src="./assets/images/homeIcon.png" alt="Home icon."> </button>
         </div>
     </div>
 
-    <div class ="box" id ="details">
-        <div class = "container-box box-header" id = "breweryLogo">
+    <div class="box" id="details">
+        <div class="container-box box-header" style="background-color:rgb(246,174,92)" id="breweryLogo" alt="Beer mug icon.">
             <span class="close">&times</span>
-            <img class = "icon" id = "breweryicon" src="assets/images/detailPage/breweryicon.png">
-            <h1 class = "detail" id = "name">*Brewery Name*</h1>
+            <img class="icon" id="breweryicon" src="assets/images/detailPage/breweryicon.png">
+            <h1 class="detail" id ="name">*Brewery Name*</h1>
         </div>
-        <div class = "box-body">
-            <div class = "container-box container-photos" id = "photos">
+        <div class="box-body">
+            <div class="container-box container-photos" style="background-color:white" id="photos">
             </div>
-            <div class = "container-box" id = "address">
-                <img class = "icon" id = "addressicon" src="assets/images/detailPage/addressicon.png">
-                <h1 class = "detail" id = "location"> *Brewery's address* </h1>
+            <div class="container-box" id="address" style ="background-color:rgb(246,174,92)" alt="Map marker icon.">
+                <img class="icon" id="addressicon" src="assets/images/detailPage/addressicon.png">
+                <h1 class="detail" id="location"> *Brewery's address* </h1>
             </div>
-            <div class = "container-box" id = "phone">
-                <img class = "icon" id = "phoneicon" src="assets/images/detailPage/phoneicon.png">
-                <h1 class = "detail" id = "phonenumber">xxx-xxx-xxxx</h1>
+            <div class="container-box" id="phone" style="background-color: white" alt="Phone icon.">
+                <img class="icon" id="phoneicon" src="assets/images/detailPage/phoneicon.png">
+                <h1 class="detail" id="phonenumber">xxx-xxx-xxxx</h1>
             </div>
-            <div class = "container-box" id = 'delivery'>
-                <img class = "icon" id = "iconThree" src="assets/images/detailPage/delivericon.png">
-                <h1 class = "detail" id = "deliveryLink">Deliver to you/ No delivery</h1>
+            <div class="container-box" id="delivery" style="background-color:rgb(246,174,92)" alt="Delivery truck icon.">
+                <img class="icon" id="iconThree" src="assets/images/detailPage/delivericon.png">
+                <h1 class="detail" id="deliveryLink">Deliver to you/ No delivery</h1>
             </div> 
         </div>
     </div>
@@ -97,8 +95,8 @@
         crossorigin="anonymous"></script>
 
 
-    <script src="assets/js/yelp.js"></script>
     <script src="./assets/js/zipcode.js"></script>
+    <script src="assets/js/yelp.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script defer   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwva93H8v_VpIqPiZ75_0hm0eoKqw4Dgw&callback=initMap"></script>

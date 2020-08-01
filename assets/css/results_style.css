@@ -1,10 +1,21 @@
-/* Results Box Css*/
+/* Results Box Css */
 .icon {
-    height: 20vh;
+    height: 10vh;
     float: left;
-    padding: 10px 10px 10px;
+    padding-left: 20px;
+    padding-top: 20px;
+    max-height: 50%;
+    max-width: 20%;
+    vertical-align: middle;
+}
+
+.delivery-icon {
+    height: 10vh;
+    float: left;
+    padding-left: 10px;
+    padding-top: 10px;
     max-height: 70%;
-    max-width: 40%;
+    max-width: 55%;
     vertical-align: middle;
 }
 
@@ -12,10 +23,19 @@
     padding-top: 15px;
     padding-right: 15px;
     float: right;
-    color: rgb(205,133,63);
+    color:black;
+    overflow: auto;
 }
 
-/*.box/.close classes code adapted from W3School modal guide*/
+.delivery-info {
+    padding-top: 15px;
+    padding-right: 15px;
+    float: right;
+    color:black;
+    overflow: auto;
+}
+
+/*. box/.close classes code adapted from W3School modal guide */
 .box {
     display: hide;
     position: fixed; 
@@ -31,13 +51,19 @@
 }
 
 .container-box {
-    box-shadow: 1px 1px 5px 1px #888888; 
-    width: 40rem;
+    width: 35rem;
     max-width: 70%;
-    height: 7rem;
+    height: 5rem;
     margin: auto;
     margin-left: 30%;
-    background-color: white;
+}
+
+.delivery-box {
+    width: 35rem;
+    max-width: 70%;
+    height: 5rem;
+    margin: auto;
+    margin-left: 30%;
 }
 
 .box-header {
@@ -64,17 +90,48 @@
     min-height: 215px;
 }
 
-a {
-    float: right;
-    text-emphasis: none;
-    color: inherit;
-    font-size: 25px;
-}
-
-/*Box images*/
 .card-image{
     width: auto;
     max-height: 200px;
     padding: 10px;
     display: inline-block;
+}
+
+a {
+    float: right;
+    text-emphasis: none;
+    color: inherit;
+    font-size: 20px;
+}
+
+/* for mobile users */
+@media only screen and (max-width: 768px) {
+    .icon {
+        padding-left: 3px;
+    }
+
+    .deliveryicon {
+        padding-left: 3px;
+    }
+
+    .detail {
+        font-size: 14px;
+        padding-right: 3px;
+        overflow-wrap: normal;
+    }
+
+    a {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .delivery-box {
+        height: 13rem;
+    }
+
+    .delivery-info {
+        padding-top: 0px;
+        padding-right: 3px;
+    }
 }
