@@ -1,48 +1,44 @@
 var i = 0, distance, duration;
-var locations = [];
+var locations;
 var searched;
 var searchedCheck = localStorage.getItem("searched");
 
 $(document).ready(function () {
-   //if localstorage is empty 
-    if(searchedCheck === false || !searchedCheck){
+    //if localstorage is empty 
+    if (searchedCheck === false || !searchedCheck) {
         $("#homepage").show();
         $("#results-content").hide();
         $("#breweries-list").hide();
         $("#map").hide();
         $("#map").empty();
         $("#details").hide();
-        } else {
-            //if local storage has results then show the searched city/zipcode
-            $("#homepage").hide();
-            $("#results-content").show();
-            $("#details").hide();
-            var zipCode = localStorage.getItem("last search")
-            breweriesNearby(zipCode);
-            searched = true;
-        };
+    } else {
+        //if local storage has results then show the searched city/zipcode
+        $("#homepage").hide();
+        $("#results-content").show();
+        $("#details").hide();
+        var zipCode = localStorage.getItem("last search")
+        breweriesNearby(zipCode);
+        searched = true;
+    }
 });
 
-$("#submit").on("click", function () {
+$("#submit").on("click", function (event) {
     //on clicking the search button 
-    $("#homepage").hide();
-    $("#results-content").show();
     var zipCode = $("#zip-code").val();
     if (zipCode === "") {
         return false;
-    }
+    };
     //go the function breweries near by and the searched the breweries near by the zipcode user enters
     breweriesNearby(zipCode);
     $("#zip-code").val("");
-    searched = true;
-    localStorage.setItem("searched", searched);
-    localStorage.setItem("last search", zipCode);
 });
 
 //on clicking the home icon it goes back to the home page
 $("#homeIcon").on("click", function () {
     $("#homepage").show();
     $("#results-content").hide();
+    $("#results-content").empty();
     $("#breweries-list").hide();
     $("#map").hide();
     $("#map").empty();
@@ -64,10 +60,6 @@ function breweriesNearby(zipCode) {
         },
     };
     $.ajax(settings).done(function (response) {
-        $("#homepage").hide();
-        $("#results-content").show();
-        $("#breweries-list").show();
-        $("#map").show();
         $("#results-content").empty();
         locations = [];
         //fetching the 10 breweries nearby
@@ -75,74 +67,116 @@ function breweriesNearby(zipCode) {
             if (i < 10) {
                 var breweryDiv = $("<div class='results'>");
                 breweryDiv.attr("id", "results" + [i]);
-                
+
                 var breweryImage = $("<img class='brewerylogo'>").attr("src", "./assets/images/sampleimage.jpg");
                 breweryDiv.append(breweryImage);
-                
+
                 //getting the brewery name
                 var breweryname = response.results[i].name;
                 var breweryName = $("<p class='title'>").html(response.results[i].name.bold());
                 breweryDiv.append(breweryName);
                 breweryDiv.attr("data-name", breweryname);
-               
+
                 var bussinesshours = response.results[i].business_status;
-             
-                if (bussinesshours == "OPERATIONAL") {
-                    //getting bussiness status
-                    var breweryStatus=("Business Status : Open");
-                    var businessStatus = $("<p>").text("Business Status : Open");
-                }
-                else {
-                    var breweryStatus=("Business Status : Closed");
-                    var businessStatus = $("<p>").text("Business Status : Closed");
-                }
-                breweryDiv.append(businessStatus);
+                var status=bussinesshoursCalc(bussinesshours);
+                breweryDiv.append(status[1]);
 
                 //getting the brewery rating  
-                var mapRating=("Rating : " +response.results[i].rating);
-                var breweryRating=$("<p>").text("Rating : " +response.results[i].rating);
+                var mapRating = ("Rating : " + response.results[i].rating);
+                var breweryRating = $("<p>").text("Rating : " + response.results[i].rating);
                 breweryDiv.append(breweryRating);
+
+                $("#results-content").append(breweryDiv);
 
                 //getting the lat and lng values to get the markers on the map
                 var brewerylat = response.results[i].geometry.location.lat;
                 var brewerylng = response.results[i].geometry.location.lng;
-                markers = [breweryname, brewerylat, brewerylng,breweryStatus,mapRating];
-                locations.push(markers);
+                markers = [breweryname, brewerylat, brewerylng, status[0], mapRating];
 
-                $("#results-content").append(breweryDiv);
+                locationsvalidate(locations,markers);
 
                 //when the user clicks on the results it fetches the yelp API and display more info
-                $("#results" + [i]).on("click", function() {
+                $("#results" + [i]).on("click", function () {
                     var ref = $(this).attr("data-name");
                     getYelp(ref, zipCode);
                 });
             };
         };
-        //function to get the get mmap displayed and the markers
-        initMap(locations);
+        //Checks if search is valid
+        cityNameValidate(locations, zipCode);
     });
 };
 
-function initMap(locations) {
-    $("#map").show();
-    $("#map").empty();
+//Determines/displayhs business hours
+function bussinesshoursCalc(bussinesshours){
+    if (bussinesshours == "OPERATIONAL") {
+        var breweryStatus = ("Business Status : Open");
+        var businessStatus = $("<p>").text("Business Status : Open");
+        return [breweryStatus,businessStatus];
+    }
+    else {
+        var breweryStatus = ("Business Status : Closed");
+        var businessStatus = $("<p>").text("Business Status : Closed");
+        return [breweryStatus,businessStatus];
+    };
+};
 
+function locationsvalidate(locations,markers) {
+    if (locations) {
+        locations.push(markers);
+        return locations;
+    }
+    else {
+        locations = [breweryname, brewerylat, brewerylng, breweryStatus, mapRating];
+        return locations;
+    };
+};
+
+function cityNameValidate(locations, zipCode) {
+    //Prevents invalid search from loading
+    if (locations.length === "" || locations.length == 0) {
+        $("#homepage").show();
+        $("#results-content").hide();
+        $("#breweries-list").hide();
+        $("#map").hide();
+        $("#error").html("Invalid City or Zipcode".bold());
+        $("#error").show()
+        return false;
+    }
+    else {
+        //Allows valid search to run
+        $("#error").hide();
+        $("#homepage").hide();
+        $("#results-content").show();
+        $("#breweries-list").show();
+        searched = true;
+        //Updates local storage
+        localStorage.setItem("searched", searched);
+        localStorage.setItem("last search", zipCode);
+        initMap(locations);
+    };
+};
+
+//function  to show the searches in the map
+function initMap(locations) {
+    $("#map").empty();
+    $("#map").show();
     $("#map").scroll(function () {
         $("#FixedDiv").animate({ top: $(this).scrollTop() });
     });
-    //to get maop displayed onto the page
+
+
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        center: new google.maps.LatLng(locations[0][1],locations[0][2]),
+        center: new google.maps.LatLng(locations[0][1], locations[0][2]),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
-
+    //display the  markers on the map
     for (i = 0; i < locations.length; i++) {
-        //to display the markers on the pgae
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
             map: map
@@ -150,12 +184,12 @@ function initMap(locations) {
 
         google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
-                //to display the brewery search info when the user clicks the markers
                 infowindow.setContent(locations[i][0]
-                    +"<br>"+locations[i][3]
-                    +"<br>"+locations[i][4]);
+                    + "<br>" + locations[i][3]
+                    + "<br>" + locations[i][4]);
                 infowindow.open(map, marker);
             }
         })(marker, i));
     };
 };
+
