@@ -53,6 +53,7 @@ function getDetails(idNum){
     $("#phonenumber").html(displayNum);
     $("#location").html(displayAddress);
     $("#deliveryLink").html("<a href=" + response.url + " target='_blank'> Delivery and Pickup Options on Yelp</a>")
+
     //adds photos to box
     for(i = 0; i < 3; i++){
       $("#photos").append($("<img>").attr({"src": response.photos[i], "class": "card-image"}));
@@ -80,7 +81,7 @@ function compileAddress(response){
   return final;
 };
 
-//Sets placeholder message if phone number is not listed on Yelp
+//Sets placeholder message if phone number is not listed on yelp
 function checkPhone (number){
   var result;
   if (number === ""){
@@ -91,7 +92,7 @@ function checkPhone (number){
   return result;
 };
 
-//Function to close window, adapted from W3Schools' modal
+//Function for close button, adapted from W3Schools modal
 $("span").on("click", function() {
   $("#details").hide();
 });

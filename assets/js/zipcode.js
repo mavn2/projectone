@@ -61,6 +61,7 @@ function breweriesNearby(zipCode) {
     };
     $.ajax(settings).done(function (response) {
         $("#results-content").empty();
+        console.log(response)
         locations = [];
         //fetching the 10 breweries nearby
         for (i = 0; i < response.results.length; i++) {
