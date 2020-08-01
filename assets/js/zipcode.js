@@ -20,24 +20,24 @@ $(document).ready(function () {
             var zipCode = localStorage.getItem("last search")
             breweriesNearby(zipCode);
             searched = true;
-        }
-    });
+        };
+});
 
-    $("#submit").on("click", function (event) {
-        //on clicking the search button 
-        $("#homepage").hide();
-        $("#results-content").show();
-        var zipCode = $("#zip-code").val();
-        if (zipCode === "") {
-            return false;
-        }
-        //go the function breweries near by and the searched the breweries near by the zipcode user enters
-        breweriesNearby(zipCode);
-        $("#zip-code").val("");
-        searched = true;
-        localStorage.setItem("searched", searched);
-        localStorage.setItem("last search", zipCode);
-    });
+$("#submit").on("click", function () {
+    //on clicking the search button 
+    $("#homepage").hide();
+    $("#results-content").show();
+    var zipCode = $("#zip-code").val();
+    if (zipCode === "") {
+        return false;
+    }
+    //go the function breweries near by and the searched the breweries near by the zipcode user enters
+    breweriesNearby(zipCode);
+    $("#zip-code").val("");
+    searched = true;
+    localStorage.setItem("searched", searched);
+    localStorage.setItem("last search", zipCode);
+});
 
 //on clicking the home icon it goes back to the home page
 $("#homeIcon").on("click", function () {
@@ -69,7 +69,6 @@ function breweriesNearby(zipCode) {
         $("#breweries-list").show();
         $("#map").show();
         $("#results-content").empty();
-        console.log(response)
         locations = [];
         //fetching the 10 breweries nearby
         for (i = 0; i < response.results.length; i++) {
@@ -121,47 +120,42 @@ function breweriesNearby(zipCode) {
         };
         //function to get the get mmap displayed and the markers
         initMap(locations);
-        console.log(locations);
     });
-
 };
 
 function initMap(locations) {
+    $("#map").show();
+    $("#map").empty();
 
-    console.log(locations);
+    $("#map").scroll(function () {
+        $("#FixedDiv").animate({ top: $(this).scrollTop() });
+    });
+    //to get maop displayed onto the page
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(locations[0][1],locations[0][2]),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
 
-        $("#map").show();
-        $("#map").empty();
+    var infowindow = new google.maps.InfoWindow();
 
-        $("#map").scroll(function () {
-            $("#FixedDiv").animate({ top: $(this).scrollTop() });
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        //to display the markers on the pgae
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
         });
-        //to get maop displayed onto the page
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: new google.maps.LatLng(locations[0][1],locations[0][2]),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
 
-        var infowindow = new google.maps.InfoWindow();
-
-        var marker, i;
-
-        for (i = 0; i < locations.length; i++) {
-            //to display the markers on the pgae
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                map: map
-            });
-
-            google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                return function () {
-                    //to display the brewery search info when the user clicks the markers
-                    infowindow.setContent(locations[i][0]
-                        +"<br>"+locations[i][3]
-                        +"<br>"+locations[i][4]);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
-        }
-    }
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                //to display the brewery search info when the user clicks the markers
+                infowindow.setContent(locations[i][0]
+                    +"<br>"+locations[i][3]
+                    +"<br>"+locations[i][4]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    };
+};
