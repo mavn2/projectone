@@ -43,7 +43,7 @@ $("#homeIcon").on("click", function () {
     $("#map").hide();
     $("#map").empty();
     searched = false;
-    localStorage.setItem("searched", searched);
+    localStorage.removeItem("searched");
 });
 
 function breweriesNearby(zipCode) {
