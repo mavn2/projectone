@@ -1,3 +1,4 @@
+/* Results Box Css */
 .icon {
     height: 10vh;
     float: left;
@@ -20,9 +21,8 @@
 
 .detail {
     padding-top: 15px;
-    padding-right: 5%;
-    padding-left:5px;
-    margin-right: 5px;
+    padding-right: 15px;    
+    margin-right: 5px                                                                                                                                                                  ;     
     float: right;
     color:black;
     overflow: auto;
@@ -31,6 +31,7 @@
 .delivery-info {
     padding-top: 15px;
     padding-right: 15px;
+    margin-right: 5px;
     float: right;
     color:black;
     overflow: auto;
@@ -53,7 +54,7 @@
 
 .container-box {
     width: 35rem;
-    max-width: 80%;
+    max-width: 70%;
     height: 5rem;
     margin: auto;
     margin-left: 30%;
@@ -61,7 +62,7 @@
 
 .delivery-box {
     width: 35rem;
-    max-width: 80%;
+    max-width: 70%;
     height: 5rem;
     margin: auto;
     margin-left: 30%;
@@ -114,39 +115,38 @@ a {
     .deliveryicon {
         padding-left: 3px;
     }
-    .container-box{
-        margin-left:9%;
-    }
+
     .detail {
         font-size: 14px;
         padding-right: 3px;
         overflow-wrap: normal;
     }
-    #delivery.delivery-box{
-        margin-left: 9%;
-
-    }
 
     a {
         font-size: 13px;
+    }
+
+    .delivery-box{
+        margin-left: 8%;
+    }
+
+    .container-box{
+        margin-left: 8%;
     }
 }
 
 @media only screen and (max-width: 480px) {
     .delivery-box {
         height: 13rem;
+        margin-left: 10%;
     }
 
     .delivery-info {
         padding-top: 0px;
         padding-right: 3px;
     }
-    .container-box{
-        margin-left:10%;
-        width:100%;
-    }
-    #delivery.delivery-box{
-        margin-left: 10%;
 
+    .container-box{
+        margin-left: 10%;
     }
 }
