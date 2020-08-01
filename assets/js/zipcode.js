@@ -79,35 +79,22 @@ function breweriesNearby(zipCode) {
                 breweryDiv.attr("data-name", breweryname);
 
                 var bussinesshours = response.results[i].business_status;
-
-                if (bussinesshours == "OPERATIONAL") {
-                    //getting bussiness status
-                    var breweryStatus = ("Business Status : Open");
-                    var businessStatus = $("<p>").text("Business Status : Open");
-                }
-                else {
-                    var breweryStatus = ("Business Status : Closed");
-                    var businessStatus = $("<p>").text("Business Status : Closed");
-                }
-                breweryDiv.append(businessStatus);
+                var status=bussinesshoursCalc(bussinesshours);
+                breweryDiv.append(status[1]);
 
                 //getting the brewery rating  
                 var mapRating = ("Rating : " + response.results[i].rating);
                 var breweryRating = $("<p>").text("Rating : " + response.results[i].rating);
                 breweryDiv.append(breweryRating);
 
+                $("#results-content").append(breweryDiv);
+
                 //getting the lat and lng values to get the markers on the map
                 var brewerylat = response.results[i].geometry.location.lat;
                 var brewerylng = response.results[i].geometry.location.lng;
-                markers = [breweryname, brewerylat, brewerylng, breweryStatus, mapRating];
-                if (locations) {
-                    locations.push(markers);
-                }
-                else {
-                    locations = [breweryname, brewerylat, brewerylng, breweryStatus, mapRating]
-                }
+                markers = [breweryname, brewerylat, brewerylng, status[0], mapRating];
 
-                $("#results-content").append(breweryDiv);
+                locationsvalidate(locations,markers);
 
                 //when the user clicks on the results it fetches the yelp API and display more info
                 $("#results" + [i]).on("click", function () {
@@ -116,21 +103,40 @@ function breweriesNearby(zipCode) {
                 });
             }
         }
-        initMap(locations,zipCode);
+        //validating the cityname
+        citynamevalidate(locations, zipCode);
     });
 
 };
 
+function bussinesshoursCalc(bussinesshours){
+    if (bussinesshours == "OPERATIONAL") {
+        //getting bussiness status
+        var breweryStatus = ("Business Status : Open");
+        var businessStatus = $("<p>").text("Business Status : Open");
+        return [breweryStatus,businessStatus];
+    }
+    else {
+        var breweryStatus = ("Business Status : Closed");
+        var businessStatus = $("<p>").text("Business Status : Closed");
+        return [breweryStatus,businessStatus];
+    }
+}
 
-function initMap(locations,zipCode) {
-    $("#error").empty();
-    console.log(locations);
-    $("#map").scroll(function () {
-        $("#FixedDiv").animate({ top: $(this).scrollTop() });
-    });
+function locationsvalidate(locations,markers) {
+    if (locations) {
+        locations.push(markers);
+        return locations;
+    }
+    else {
+        locations = [breweryname, brewerylat, brewerylng, breweryStatus, mapRating];
+        return locations;
+    }
+}
 
+function citynamevalidate(locations, zipCode) {
+    //if the cityname is invalid it stays in the homepage
     if (locations.length === "" || locations.length == 0) {
-        console.log("hello");
         $("#homepage").show();
         $("#results-content").hide();
         $("#breweries-list").hide();
@@ -141,18 +147,30 @@ function initMap(locations,zipCode) {
         return false;
     }
     else {
+        //if the cityname/zipcode is valid then show the results
         $("#error").hide();
         console.log(locations);
         console.log("hello");
         $("#homepage").hide();
         $("#results-content").show();
         $("#breweries-list").show();
-        $("#map").show();
-        searched=true;
+        searched = true;
+        //storing the search results in the local storage if the city exists
         localStorage.setItem("searched", searched);
         localStorage.setItem("last search", zipCode);
-        //function to get the get map displayed and the markers
+        initMap(locations);
     }
+
+}
+
+//function  to show the searches in the map
+function initMap(locations) {
+    $("#map").empty();
+    $("#map").show();
+    $("#map").scroll(function () {
+        $("#FixedDiv").animate({ top: $(this).scrollTop() });
+    });
+
 
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
@@ -163,7 +181,7 @@ function initMap(locations,zipCode) {
     var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
-
+    //display the  markers on the map
     for (i = 0; i < locations.length; i++) {
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
