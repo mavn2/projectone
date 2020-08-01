@@ -140,7 +140,7 @@ function cityNameValidate(locations, zipCode) {
         $("#breweries-list").hide();
         $("#map").hide();
         $("#error").html("Invalid City or Zipcode".bold());
-        $("#error").show()
+        $("#error").show();
         return false;
     }
     else {
@@ -161,10 +161,6 @@ function cityNameValidate(locations, zipCode) {
 function initMap(locations) {
     $("#map").empty();
     $("#map").show();
-    $("#map").scroll(function () {
-        $("#FixedDiv").animate({ top: $(this).scrollTop() });
-    });
-
 
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
